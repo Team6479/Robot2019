@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
 
     oi = new OI();
 
-    Controllers.setControllerType(Controllers.ControllerType.JOYSTICK);
+    Controllers.setControllerType(Controllers.ControllerType.XBOX);
   }
 
   /**
