@@ -9,6 +9,8 @@ package frc.robot;
 
 import frc.robot.drivers.Joystick;
 import frc.robot.util.JoystickMap;
+import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.util.XboxMap;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -43,5 +45,9 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
 
+  //Joyctick object
   public Joystick stick = new Joystick(JoystickMap.joystick);
+
+  //Xbox controller object
+  public XboxController controller = new XboxController(XboxMap.controller);
 }
