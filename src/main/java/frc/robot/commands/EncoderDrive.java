@@ -44,7 +44,7 @@ public class EncoderDrive extends Command {
   @Override
   protected boolean isFinished() {
     double pos = Robot.drivetrain.getPosition(Side.Average, Unit.Meters);
-    System.out.println(pos);
+    // System.out.println(pos);
     return pos >= distance;
   }
 

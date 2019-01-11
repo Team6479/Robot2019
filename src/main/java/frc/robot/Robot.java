@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.util.Controllers;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,6 +32,8 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
 
     oi = new OI();
+
+    Controllers.setControllerType(Controllers.ControllerType.JOYSTICK);
   }
 
   /**
@@ -84,6 +87,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    
   }
 
   /**

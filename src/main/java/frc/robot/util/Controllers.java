@@ -19,7 +19,7 @@ public class Controllers {
   /**
    * Enum to handle controller types such as Xbox, Joystick, and others if needed.
    */
-  public enum ControllerType {
+  public static enum ControllerType {
     XBOX, JOYSTICK;
   }
   private static ControllerType controllerType;
@@ -27,7 +27,7 @@ public class Controllers {
    * Sets controller type (xbox/joystick)
    * @param controllerInput Controller type to set to
    */
-  public void setControllerType(ControllerType controllerInput) {
+  public static void setControllerType(ControllerType controllerInput) {
     controllerType = controllerInput;
   }
 
@@ -54,7 +54,7 @@ public class Controllers {
    */
   public static double getXAxis() {
     if (controllerType == ControllerType.XBOX) {
-      //Return the x axis of the left analouge sitck
+      //Return the x axis of the left analogue sitck
       return Robot.oi.controller.getX(Hand.kLeft);
     } else if (controllerType == ControllerType.JOYSTICK) {
       //Return the z axis (rotation) of the joystick
@@ -72,7 +72,7 @@ public class Controllers {
   public static double getThrottle() {
     if (controllerType == ControllerType.XBOX) {
       //Sets throttle/sensitivity to full
-      return 1;
+      return -1;
     } else if (controllerType == ControllerType.JOYSTICK) {
       //Returns the postition of the bottom throttle on joystick
       return Robot.oi.stick.getThrottle();
