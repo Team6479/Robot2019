@@ -25,6 +25,9 @@ public class Drivetrain extends Subsystem {
   public enum Side {
     Left, Right, Average;
   }
+  public enum Place {
+    Front, Back, Average;
+  }
 
   // Units are in metric
   public enum Unit {
@@ -52,9 +55,7 @@ public class Drivetrain extends Subsystem {
     rightMaster = new TalonSRX(RobotMap.RIGHT_FRONT);
     // Init Slave Motors and tell them to follow their respective masters
     leftSlave = new TalonSRX(RobotMap.LEFT_BACK);
-    leftSlave.follow(leftMaster);
     rightSlave = new TalonSRX(RobotMap.RIGHT_BACK);
-    rightSlave.follow(rightMaster);
 
     // Set output direction
     leftMaster.setInverted(false);
@@ -69,7 +70,9 @@ public class Drivetrain extends Subsystem {
     // Add Mag Encoders
     int timeoutMs = 0;
     leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
+    leftSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
     rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
+    rightSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
     resetEncoders();
   }
 
@@ -80,32 +83,61 @@ public class Drivetrain extends Subsystem {
 
   public void set(ControlMode controlMode, double speed) {
     leftMaster.set(controlMode, speed);
+    leftSlave.set(controlMode, speed);
     rightMaster.set(controlMode, speed);
+    rightSlave.set(controlMode, speed);
   }
 
   public void arcadeDrive(double speed, double rotation) {
     leftMaster.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, rotation);
+    leftSlave.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, rotation);
     rightMaster.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, -rotation);
+    rightSlave.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, -rotation);
   }
 
   public void resetEncoders() {
     leftMaster.setSelectedSensorPosition(0, 0, 0);
+    leftSlave.setSelectedSensorPosition(0, 0, 0);
     rightMaster.setSelectedSensorPosition(0, 0, 0);
+    rightSlave.setSelectedSensorPosition(0, 0, 0);
   }
 
-  public double getPosition(Side side) {
+  public double getPosition(Side side, Place place) {
     if (side == Side.Left) {
-      return leftMaster.getSelectedSensorPosition(0);
+      if(place == Place.Front) {
+        return leftMaster.getSelectedSensorPosition(0);
+      }
+      else if(place == Place.Back) {
+        return leftSlave.getSelectedSensorPosition(0);
+      }
+      else {
+        return (Math.abs(leftMaster.getSelectedSensorPosition(0)) + Math.abs(leftSlave.getSelectedSensorPosition(0))) / 2;
+      }
     } else if (side == Side.Right) {
-      return rightMaster.getSelectedSensorPosition(0);
+      if(place == Place.Front) {
+        return rightMaster.getSelectedSensorPosition(0);
+      }
+      else if(place == Place.Back) {
+        return rightSlave.getSelectedSensorPosition(0);
+      }
+      else {
+        return (Math.abs(rightMaster.getSelectedSensorPosition(0)) + Math.abs(rightSlave.getSelectedSensorPosition(0))) / 2;
+      }
     } else {
-      return (Math.abs(leftMaster.getSelectedSensorPosition(0)) + Math.abs(rightMaster.getSelectedSensorPosition(0)))
-          / 2;
+      if(place == Place.Front) {
+        return (Math.abs(leftMaster.getSelectedSensorPosition(0)) + Math.abs(rightMaster.getSelectedSensorPosition(0))) / 2;
+      }
+      else if(place == Place.Back) {
+        return (Math.abs(leftSlave.getSelectedSensorPosition(0)) + Math.abs(rightSlave.getSelectedSensorPosition(0))) / 2;
+      }
+      else {
+        return (Math.abs(leftMaster.getSelectedSensorPosition(0)) + Math.abs(rightMaster.getSelectedSensorPosition(0)) + Math.abs(leftSlave.getSelectedSensorPosition(0)) + Math.abs(rightSlave.getSelectedSensorPosition(0))) / 4;
+      }
     }
   }
 
-  public double getPosition(Side side, Unit unit) {
-    double rawPosition = getPosition(side);
+  public double getPosition(Side side, Place place, Unit unit) {
+    double rawPosition = getPosition(side, place);
     double rotationsPosition = rawPosition / CPR;
 
     if (unit == Unit.Rotations) {
@@ -118,19 +150,42 @@ public class Drivetrain extends Subsystem {
     }
   }
 
-  public double getVelocity(Side side) {
+  public double getVelocity(Side side, Place place) {
     if (side == Side.Left) {
-      return leftMaster.getSelectedSensorVelocity(0);
+      if(place == Place.Front) {
+        return leftMaster.getSelectedSensorVelocity(0);
+      }
+      else if(place == Place.Back) {
+        return leftSlave.getSelectedSensorVelocity(0);
+      }
+      else {
+        return (Math.abs(leftMaster.getSelectedSensorVelocity(0)) + Math.abs(leftSlave.getSelectedSensorVelocity(0))) / 2;
+      }
     } else if (side == Side.Right) {
-      return rightMaster.getSelectedSensorVelocity(0);
+      if(place == Place.Front) {
+        return rightMaster.getSelectedSensorVelocity(0);
+      }
+      else if(place == Place.Back) {
+        return rightSlave.getSelectedSensorVelocity(0);
+      }
+      else {
+        return (Math.abs(rightMaster.getSelectedSensorVelocity(0)) + Math.abs(rightSlave.getSelectedSensorVelocity(0))) / 2;
+      }
     } else {
-      return (Math.abs(leftMaster.getSelectedSensorVelocity(0)) + Math.abs(rightMaster.getSelectedSensorVelocity(0)))
-          / 2;
+      if(place == Place.Front) {
+        return (Math.abs(leftMaster.getSelectedSensorVelocity(0)) + Math.abs(rightMaster.getSelectedSensorVelocity(0))) / 2;
+      }
+      else if(place == Place.Back) {
+        return (Math.abs(leftSlave.getSelectedSensorVelocity(0)) + Math.abs(rightSlave.getSelectedSensorVelocity(0))) / 2;
+      }
+      else {
+        return (Math.abs(leftMaster.getSelectedSensorVelocity(0)) + Math.abs(rightMaster.getSelectedSensorVelocity(0)) + Math.abs(leftSlave.getSelectedSensorVelocity(0)) + Math.abs(rightSlave.getSelectedSensorVelocity(0))) / 4;
+      }
     }
   }
 
-  public double getVelocity(Side side, Unit unit) {
-    double rawVelocity = getVelocity(side);
+  public double getVelocity(Side side, Place place, Unit unit) {
+    double rawVelocity = getVelocity(side, place);
     double rotationsVelocity = rawVelocity / CPR;
 
     if (unit == Unit.Rotations) {
