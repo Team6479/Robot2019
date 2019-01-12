@@ -9,7 +9,7 @@ package frc.robot;
 
 import frc.robot.drivers.Joystick;
 import frc.robot.util.JoystickMap;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.drivers.XboxController;
 import frc.robot.util.XboxMap;
 
 /**
