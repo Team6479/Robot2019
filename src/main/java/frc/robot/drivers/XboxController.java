@@ -44,6 +44,10 @@ public class XboxController extends edu.wpi.first.wpilibj.XboxController {
 			x = x * scale;
 			y = y * scale;
 		}
+		else {
+			x = 0;
+			y = 0;
+		}
 
 		if (axis == XboxMap.LeftJoystickX || axis == XboxMap.RightJoystickX) {
 			return x;
