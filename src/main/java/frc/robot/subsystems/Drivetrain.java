@@ -88,11 +88,33 @@ public class Drivetrain extends Subsystem {
     rightSlave.set(controlMode, speed);
   }
 
+  /**
+   * Drives normally w/o mecanum capabilities
+   * Included for backwards-compatibility only.
+   * @see #mecanumDrive
+   * @param speed The forward-backward speed
+   * @param rotation The rotation
+   */
   public void arcadeDrive(double speed, double rotation) {
     leftMaster.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, rotation);
     leftSlave.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, rotation);
     rightMaster.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, -rotation);
     rightSlave.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, -rotation);
+  }
+
+  /**
+   * Drives using the full capabilities of the Mecanum wheels
+   * @param speedFB The forward-backward speed
+   * @param speedLR The left-right speed
+   * @param rotation The rotation
+   * @author Leo Wilson
+   */
+  public void mecanumDrive(double speedFB, double speedLR, double rotation) {
+    // TODO: mecanum stuff
+    leftMaster.set(ControlMode.PercentOutput, speedFB, DemandType.ArbitraryFeedForward, rotation);
+    leftSlave.set(ControlMode.PercentOutput, speedFB, DemandType.ArbitraryFeedForward, rotation);
+    rightMaster.set(ControlMode.PercentOutput, speedFB, DemandType.ArbitraryFeedForward, -rotation);
+    rightSlave.set(ControlMode.PercentOutput, speedFB, DemandType.ArbitraryFeedForward, -rotation);
   }
 
   public void resetEncoders() {
