@@ -127,11 +127,11 @@ public class Drivetrain extends Subsystem {
    */
   public void mecanumDrive(double speedFB, double speedLR, double rotation) {
     if(speedLR >= 0) { // right
-      rawMecnumDrive((speedFB + speedLR) / -2, (speedFB + speedLR) / 2, (speedFB + speedLR) / 2, (speedFB + speedLR) / -2, rotation, -rotation);
+      rawMecnumDrive((speedFB - speedLR) / 2, (speedFB + speedLR) / 2, (speedFB + speedLR) / 2, (speedFB - speedLR) / 2, rotation, -rotation);
     }
     else { // left
       speedLR = Math.abs(speedLR);
-      rawMecnumDrive((speedFB + speedLR) / 2, (speedFB + speedLR) / -2, (speedFB + speedLR) / -2, (speedFB + speedLR) / 2, rotation, -rotation);
+      rawMecnumDrive((speedFB + speedLR) / 2, (speedFB - speedLR) / 2, (speedFB - speedLR) / 2, (speedFB + speedLR) / 2, rotation, -rotation);
     }
     
   }
