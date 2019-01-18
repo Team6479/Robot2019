@@ -126,7 +126,10 @@ public class Drivetrain extends Subsystem {
    * @author Leo Wilson
    */
   public void mecanumDrive(double speedFB, double speedLR, double rotation) {
-    if(speedLR >= 0) { // right
+    if(speedLR == 0) { // forward-backward only
+      arcadeDrive(speedFB, rotation);
+    }
+    else if(speedLR > 0) { // right
       rawMecnumDrive((speedFB - speedLR) / 2, (speedFB + speedLR) / 2, (speedFB + speedLR) / 2, (speedFB - speedLR) / 2, rotation, -rotation);
     }
     else { // left
