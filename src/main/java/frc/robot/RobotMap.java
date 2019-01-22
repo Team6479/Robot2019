@@ -30,4 +30,8 @@ public class RobotMap {
   public static final int LEFT_BACK = 1;
   public static final int RIGHT_FRONT = 2;
   public static final int RIGHT_BACK = 3;
+
+  // Pneumatics
+  public static final int COMPRESSOR = 0;
+  public static final int SOLENOID_PLACEHOLDER = 0;
 }
