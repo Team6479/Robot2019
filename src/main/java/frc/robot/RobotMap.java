@@ -34,4 +34,6 @@ public class RobotMap {
   // Pneumatics
   public static final int COMPRESSOR = 0;
   public static final int SOLENOID_PLACEHOLDER = 0;
+  public static final int SOLENOID_HATCH_PIVOT = 5;
+  public static final int SOLENOID_HATCH_GRABBER = 6;
 }
