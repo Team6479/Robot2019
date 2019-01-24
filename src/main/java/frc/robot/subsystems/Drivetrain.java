@@ -12,7 +12,9 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.talonsrxprofiles.DefaultTalonSRXProfile;
@@ -49,13 +51,30 @@ public class Drivetrain extends Subsystem {
   // Right Back Motor (Slave)
   private TalonSRX rightSlave;
 
+  // Declare 4 Motor Controllers (but different i swear)
+  // Left Front Motor (Master)
+  private PWMTalonSRX leftMasterPWM;
+  // Left Back Motor (Slave)
+  private PWMTalonSRX leftSlavePWM;
+  // Right Front Motor (Master)
+  private PWMTalonSRX rightMasterPWM;
+  // Right Back Motor (Slave)
+  private PWMTalonSRX rightSlavePWM;
+
+  private MecanumDrive robotDrive;
+
   public Drivetrain() {
-    // Init Master Motors
+    // Init Motors
     leftMaster = new TalonSRX(RobotMap.LEFT_FRONT);
     rightMaster = new TalonSRX(RobotMap.RIGHT_FRONT);
-    // Init Slave Motors and tell them to follow their respective masters
     leftSlave = new TalonSRX(RobotMap.LEFT_BACK);
     rightSlave = new TalonSRX(RobotMap.RIGHT_BACK);
+    // init the same motors but different
+    leftMasterPWM = new PWMTalonSRX(RobotMap.LEFT_FRONT);
+    rightMasterPWM = new PWMTalonSRX(RobotMap.RIGHT_FRONT);
+    leftSlavePWM = new PWMTalonSRX(RobotMap.LEFT_BACK);
+    rightSlavePWM = new PWMTalonSRX(RobotMap.RIGHT_BACK);
+    robotDrive = new MecanumDrive(leftMasterPWM, leftSlavePWM, rightMasterPWM, rightSlavePWM);
 
     // Set output direction
     leftMaster.setInverted(false);
@@ -103,22 +122,6 @@ public class Drivetrain extends Subsystem {
   }
 
   /**
-   * Sets the motors in a mecanum-compatible way
-   * @param leftMasterSpeed What it looks like
-   * @param leftSlaveSpeed What it looks like
-   * @param rightMasterSpeed What it looks like
-   * @param rightSlaveSpeed What it looks like
-   * @param leftOffset You probably know it as "rotation"
-   * @param rightOffset You probably know it as "-rotation"
-   */
-  public void rawMecnumDrive(double leftMasterSpeed, double leftSlaveSpeed, double rightMasterSpeed, double rightSlaveSpeed, double leftOffset, double rightOffset) {
-    leftMaster.set(ControlMode.PercentOutput, leftMasterSpeed, DemandType.ArbitraryFeedForward, leftOffset);
-    leftSlave.set(ControlMode.PercentOutput, leftSlaveSpeed, DemandType.ArbitraryFeedForward, leftOffset);
-    rightMaster.set(ControlMode.PercentOutput, rightMasterSpeed, DemandType.ArbitraryFeedForward, rightOffset);
-    rightSlave.set(ControlMode.PercentOutput, rightSlaveSpeed, DemandType.ArbitraryFeedForward, rightOffset);
-  }
-
-  /**
    * Drives using the full capabilities of the Mecanum wheels
    * @param speedFB The forward-backward speed
    * @param speedLR The left-right speed
@@ -126,17 +129,7 @@ public class Drivetrain extends Subsystem {
    * @author Leo Wilson
    */
   public void mecanumDrive(double speedFB, double speedLR, double rotation) {
-    if(speedLR == 0) { // forward-backward only
-      arcadeDrive(speedFB, rotation);
-    }
-    else if(speedLR > 0) { // right
-      rawMecnumDrive((speedFB - speedLR) / 2, (speedFB + speedLR) / 2, (speedFB + speedLR) / 2, (speedFB - speedLR) / 2, rotation, -rotation);
-    }
-    else { // left
-      speedLR = Math.abs(speedLR);
-      rawMecnumDrive((speedFB + speedLR) / 2, (speedFB - speedLR) / 2, (speedFB - speedLR) / 2, (speedFB + speedLR) / 2, rotation, -rotation);
-    }
-    
+    robotDrive.driveCartesian(speedFB, speedLR, rotation);
   }
 
   public void resetEncoders() {
