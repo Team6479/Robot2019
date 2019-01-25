@@ -132,6 +132,17 @@ public class Drivetrain extends Subsystem {
     robotDrive.driveCartesian(speedFB, speedLR, rotation);
   }
 
+  /**
+   * Drives using the full capabilities of the Mecanum wheels
+   * @param magnitude The speed
+   * @param speedLR The angle in which to travel
+   * @param rotation The rotation
+   * @author Leo Wilson
+   */
+  public void mecanumDrivePolar(double magnitude, double angle, double rotation) {
+    robotDrive.drivePolar(magnitude, angle, rotation);
+  }
+
   public void resetEncoders() {
     leftMaster.setSelectedSensorPosition(0, 0, 0);
     leftSlave.setSelectedSensorPosition(0, 0, 0);
