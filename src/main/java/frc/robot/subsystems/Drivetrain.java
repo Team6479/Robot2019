@@ -108,14 +108,12 @@ public class Drivetrain extends Subsystem {
    * @param leftSlaveSpeed What it looks like
    * @param rightMasterSpeed What it looks like
    * @param rightSlaveSpeed What it looks like
-   * @param leftOffset You probably know it as "rotation"
-   * @param rightOffset You probably know it as "-rotation"
    */
-  public void rawMecnumDrive(double leftMasterSpeed, double leftSlaveSpeed, double rightMasterSpeed, double rightSlaveSpeed, double leftOffset, double rightOffset) {
-    leftMaster.set(ControlMode.PercentOutput, leftMasterSpeed, DemandType.ArbitraryFeedForward, leftOffset);
-    leftSlave.set(ControlMode.PercentOutput, leftSlaveSpeed, DemandType.ArbitraryFeedForward, leftOffset);
-    rightMaster.set(ControlMode.PercentOutput, rightMasterSpeed, DemandType.ArbitraryFeedForward, rightOffset);
-    rightSlave.set(ControlMode.PercentOutput, rightSlaveSpeed, DemandType.ArbitraryFeedForward, rightOffset);
+  public void rawMecnumDrive(double leftMasterSpeed, double leftSlaveSpeed, double rightMasterSpeed, double rightSlaveSpeed) {
+    leftMaster.set(ControlMode.PercentOutput, leftMasterSpeed);
+    leftSlave.set(ControlMode.PercentOutput, leftSlaveSpeed);
+    rightMaster.set(ControlMode.PercentOutput, rightMasterSpeed);
+    rightSlave.set(ControlMode.PercentOutput, rightSlaveSpeed);
   }
 
   /**
@@ -126,17 +124,7 @@ public class Drivetrain extends Subsystem {
    * @author Leo Wilson
    */
   public void mecanumDrive(double speedFB, double speedLR, double rotation) {
-    if(speedLR == 0) { // forward-backward only
-      arcadeDrive(speedFB, rotation);
-    }
-    else if(speedLR > 0) { // right
-      rawMecnumDrive((speedFB - speedLR) / 2, (speedFB + speedLR) / 2, (speedFB + speedLR) / 2, (speedFB - speedLR) / 2, rotation, -rotation);
-    }
-    else { // left
-      speedLR = Math.abs(speedLR);
-      rawMecnumDrive((speedFB + speedLR) / 2, (speedFB - speedLR) / 2, (speedFB - speedLR) / 2, (speedFB + speedLR) / 2, rotation, -rotation);
-    }
-    
+    rawMecnumDrive(speedFB + speedLR + rotation, speedFB - speedLR + rotation, speedFB - speedLR - rotation, speedFB + speedLR - rotation);
   }
 
   public void resetEncoders() {
