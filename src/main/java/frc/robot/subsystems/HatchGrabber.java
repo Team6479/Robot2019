@@ -30,7 +30,7 @@ public class HatchGrabber extends Subsystem {
   }
   
   public void release() {
-    grabberSol.set(true);
+    grabberSol.set(false);
   }
 
   public void pivot(boolean on) {
