@@ -27,7 +27,7 @@ public class Controllers {
    * Sets controller type (xbox/joystick)
    * @param controllerInput Controller type to set to
    */
-  public void setControllerType(ControllerType controllerInput) {
+  public static void setControllerType(ControllerType controllerInput) {
     controllerType = controllerInput;
   }
 
