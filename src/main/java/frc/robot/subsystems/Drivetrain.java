@@ -50,10 +50,9 @@ public class Drivetrain extends Subsystem {
   private TalonSRX rightSlave;
 
   public Drivetrain() {
-    // Init Master Motors
+    // Init Motors
     leftMaster = new TalonSRX(RobotMap.LEFT_FRONT);
     rightMaster = new TalonSRX(RobotMap.RIGHT_FRONT);
-    // Init Slave Motors and tell them to follow their respective masters
     leftSlave = new TalonSRX(RobotMap.LEFT_BACK);
     rightSlave = new TalonSRX(RobotMap.RIGHT_BACK);
 
@@ -118,8 +117,8 @@ public class Drivetrain extends Subsystem {
 
   /**
    * Drives using the full capabilities of the Mecanum wheels
-   * @param speedFB The forward-backward speed
-   * @param speedLR The left-right speed
+   * @param magnitude The speed
+   * @param speedLR The angle in which to travel
    * @param rotation The rotation
    * @author Leo Wilson
    */
