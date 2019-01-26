@@ -127,6 +127,10 @@ public class Drivetrain extends Subsystem {
     rawMecnumDrive(speedFB + speedLR + rotation, speedFB - speedLR + rotation, speedFB - speedLR - rotation, speedFB + speedLR - rotation);
   }
 
+  public void mecanumDrivePolar(double magnitude, double angle, double rotation) {
+    mecanumDrive(magnitude * Math.sin(angle * (Math.PI / 180.0)), (magnitude * Math.cos(angle * (Math.PI / 180.0))), rotation);
+  }
+
   public void resetEncoders() {
     leftMaster.setSelectedSensorPosition(0, 0, 0);
     leftSlave.setSelectedSensorPosition(0, 0, 0);
