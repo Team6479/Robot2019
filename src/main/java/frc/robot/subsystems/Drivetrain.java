@@ -11,8 +11,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.RobotMap;
@@ -53,13 +53,13 @@ public class Drivetrain extends Subsystem {
 
   // Declare 4 Motor Controllers (but different i swear)
   // Left Front Motor (Master)
-  private PWMTalonSRX leftMasterPWM;
+  private WPI_TalonSRX leftMasterPWM;
   // Left Back Motor (Slave)
-  private PWMTalonSRX leftSlavePWM;
+  private WPI_TalonSRX leftSlavePWM;
   // Right Front Motor (Master)
-  private PWMTalonSRX rightMasterPWM;
+  private WPI_TalonSRX rightMasterPWM;
   // Right Back Motor (Slave)
-  private PWMTalonSRX rightSlavePWM;
+  private WPI_TalonSRX rightSlavePWM;
 
   private MecanumDrive robotDrive;
 
@@ -70,10 +70,10 @@ public class Drivetrain extends Subsystem {
     leftSlave = new TalonSRX(RobotMap.LEFT_BACK);
     rightSlave = new TalonSRX(RobotMap.RIGHT_BACK);
     // init the same motors but different
-    leftMasterPWM = new PWMTalonSRX(RobotMap.LEFT_FRONT);
-    rightMasterPWM = new PWMTalonSRX(RobotMap.RIGHT_FRONT);
-    leftSlavePWM = new PWMTalonSRX(RobotMap.LEFT_BACK);
-    rightSlavePWM = new PWMTalonSRX(RobotMap.RIGHT_BACK);
+    leftMasterPWM = new WPI_TalonSRX(RobotMap.LEFT_FRONT);
+    rightMasterPWM = new WPI_TalonSRX(RobotMap.RIGHT_FRONT);
+    leftSlavePWM = new WPI_TalonSRX(RobotMap.LEFT_BACK);
+    rightSlavePWM = new WPI_TalonSRX(RobotMap.RIGHT_BACK);
     robotDrive = new MecanumDrive(leftMasterPWM, leftSlavePWM, rightMasterPWM, rightSlavePWM);
 
     // Set output direction
@@ -129,6 +129,7 @@ public class Drivetrain extends Subsystem {
    * @author Leo Wilson
    */
   public void mecanumDrive(double speedFB, double speedLR, double rotation) {
+    // leftMasterPWM.set(speedFB);
     robotDrive.driveCartesian(speedFB, speedLR, rotation);
   }
 
