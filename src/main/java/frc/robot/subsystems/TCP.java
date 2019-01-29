@@ -31,7 +31,7 @@ public class TCP extends Subsystem {
   private final int HOST_PORT = 5005;
 
   enum Keys {
-    PING("PING");
+    PING("PING"), POSITION("POSITION");
     public final String key;
     private Keys(String key) {
       this.key = key;
