@@ -31,8 +31,8 @@ public class TeleopDrive extends Command {
   @Override
   protected void execute() {
     // Execute arcadeDrive with the x axis and y axis
-    // scale = (-Controllers.getThrottle() + 1) / 2;
-    scale = 1;    
+    scale = (-Controllers.getThrottle() + 1) / 2;
+    // scale = 1;    
     // Robot.drivetrain.arcadeDrive(Robot.oi.controller.getX(Hand.kLeft),
     // Robot.oi.controller.getY(Hand.kLeft));
     Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllers.getYAxis() * scale);
