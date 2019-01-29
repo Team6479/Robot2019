@@ -48,37 +48,35 @@ public class TCP extends Subsystem {
     }
   }
 
-  public String set(Keys key, String value) {
+  public String sendRaw(String data) {
     try {
-      output.println("SET " + key.key + " " + value);
-      String res = input.readLine().trim();
-      if(res.substring(0, 3) == "+OK") {
-        return res;
-      }
-      else {
-        DriverStation.reportError("Server returned error: " + res, true);
-        return res;
-      }
+      output.println(data);
+      return input.readLine().trim();
     } catch (Exception e) {
       DriverStation.reportError("Error getting data:" + e.getMessage(), true);
-      return "";
+      return null;
+    }
+  }
+
+  public String set(Keys key, String value) {
+    String res = sendRaw("SET " + key.key + " " + value);
+    if(res.substring(0, 3) == "+OK") {
+      return res.substring(3);
+    }
+    else {
+      DriverStation.reportError("Server returned error: " + res, true);
+      return null;
     }
   }
 
   public String get(Keys key) {
-    try {
-      output.println("GET " + key.key);
-      String res = input.readLine().trim();
-      if(res.substring(0, 3) == "+OK") {
-        return res;
-      }
-      else {
-        DriverStation.reportError("Server returned error: " + res, true);
-        return res;
-      }
-    } catch (Exception e) {
-      DriverStation.reportError("Error getting data:" + e.getMessage(), true);
-      return "";
+    String res = sendRaw("GET " + key.key);
+    if(res.substring(0, 3) == "+OK") {
+      return res.substring(3);
+    }
+    else {
+      DriverStation.reportError("Server returned error: " + res, true);
+      return null;
     }
   }
 
