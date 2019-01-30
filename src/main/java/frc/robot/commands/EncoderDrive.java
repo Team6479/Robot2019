@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain.Place;
 import frc.robot.subsystems.Drivetrain.Side;
 import frc.robot.subsystems.Drivetrain.Unit;
 
@@ -43,8 +44,7 @@ public class EncoderDrive extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    double pos = Robot.drivetrain.getPosition(Side.Average, Unit.Meters);
-    // System.out.println(pos);
+    double pos = Robot.drivetrain.getPosition(Side.Average, Place.Average, Unit.Meters);
     return pos >= distance;
   }
 
