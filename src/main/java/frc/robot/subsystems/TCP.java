@@ -30,7 +30,7 @@ public class TCP extends Subsystem {
   private final String HOST_IP_ADDR = "192.168.1.7";
   private final int HOST_PORT = 5005;
 
-  enum Keys {
+  public static enum Keys {
     PING("PING"), POSITION("POSITION");
     public final String key;
     private Keys(String key) {

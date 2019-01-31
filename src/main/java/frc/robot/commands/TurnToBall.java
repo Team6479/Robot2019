@@ -7,8 +7,11 @@
 
 package frc.robot.commands;
 
+import java.util.Arrays;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.TCP;
 
 public class TurnToBall extends Command {
   public TurnToBall() {
@@ -17,7 +20,7 @@ public class TurnToBall extends Command {
     // eg. requires(chassis);
   }
 
-  public double degToPercent(double deg) {
+  public static double degToPercent(double deg) {
     if(deg > 180) {
       deg = -(deg % 180);
     }
@@ -27,6 +30,11 @@ public class TurnToBall extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    String[] output = Robot.tcp.get(TCP.Keys.POSITION).split(",");
+    double[] vals = new double[output.length];
+    for(int i = 0; i < output.length; i++) {
+      vals[i] = Double.parseDouble(output[i]);
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
