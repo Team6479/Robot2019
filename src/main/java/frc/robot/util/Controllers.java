@@ -37,8 +37,8 @@ public class Controllers {
    */
   public static double getYAxis() {
     if (controllerType == ControllerType.XBOX) {
-      //Return the combined values of both xbox triggers
-      return Robot.oi.controller.getTriggerAxis(Hand.kRight) - Robot.oi.controller.getTriggerAxis(Hand.kLeft);
+      //Return the x axis of the left analouge sitck
+      return Robot.oi.controller.getY(Hand.kLeft);
     } else if (controllerType == ControllerType.JOYSTICK) {
       //Return the y axis of the joyctick
       return -Robot.oi.stick.getRawAxis(JoystickMap.joystickYAxis);
@@ -50,12 +50,29 @@ public class Controllers {
 
   /**
    * Gets/returns x axis double.
-   * @return x axis value based on the ControllerType.
+   * @return x axis values based on the ControllerType
    */
   public static double getXAxis() {
     if (controllerType == ControllerType.XBOX) {
       //Return the x axis of the left analogue sitck
       return Robot.oi.controller.getX(Hand.kLeft);
+    } else if (controllerType == ControllerType.JOYSTICK) {
+      //Return the x axis of the joystick
+      return Robot.oi.stick.getRawAxis(JoystickMap.joystickXAxis);
+    } else {
+      //Defualt return
+      return 0;
+    }
+  }
+
+  /**
+   * Gets/returns x axis double.
+   * @return x axis value based on the ControllerType.
+   */
+  public static double getZAxis() {
+    if (controllerType == ControllerType.XBOX) {
+      //Return the combined values of both xbox triggers
+      return Robot.oi.controller.getTriggerAxis(Hand.kRight) - Robot.oi.controller.getTriggerAxis(Hand.kLeft);
     } else if (controllerType == ControllerType.JOYSTICK) {
       //Return the z axis (rotation) of the joystick
       return Robot.oi.stick.getRawAxis(JoystickMap.joystickZAxis);
