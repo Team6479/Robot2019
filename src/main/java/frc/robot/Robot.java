@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.TCP;
 import frc.robot.util.Controllers;
 
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static OI oi;
   public static TCP tcp;
+  public static Gyro gyro;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -36,6 +38,8 @@ public class Robot extends TimedRobot {
     oi = new OI();
 
     tcp = new TCP();
+
+    gyro = new Gyro();
 
     Controllers.setControllerType(Controllers.ControllerType.XBOX);
   }
