@@ -12,19 +12,27 @@ import frc.robot.Robot;
 import frc.robot.subsystems.TCP;
 
 public class TurnToBall extends Command {
+  private static final double ERR = 1;
   double rotaion;
+  double current;
 
   public TurnToBall() {
     requires(Robot.tcp);
     requires(Robot.drivetrain);
+    requires(Robot.gyro);
     // eg. requires(chassis);
   }
 
-  public static double degToPercent(double deg) {
-    if(deg > 180) {
-      deg = -(deg % 180);
+  public double siggy(double x) {
+    if(x == 0) {
+      return 0;
     }
-    return deg / 180;
+    else if(x > 0) {
+      return -(Math.pow(Math.E, x / 45) / (Math.pow(Math.E, x / 45) + 1)) + 1;
+    }
+    else {
+      return -(Math.pow(Math.E, x / 45) / (Math.pow(Math.E, x / 45) + 1)) - 1;
+    }
   }
 
   // Called just before this Command runs the first time
@@ -36,21 +44,20 @@ public class TurnToBall extends Command {
       vals[i] = Double.parseDouble(output[i]);
     }
     rotaion = vals[1];
+    Robot.gyro.reset();
   }
 
-  /*public double avgRotation() {
-    return (Robot.drivetrain.rightMaster.get)
-  }*/
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //
+    current = Robot.gyro.getAngle();
+    Robot.drivetrain.mecanumDrive(0, siggy(rotaion - current), 0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Math.abs(Robot.gyro.getAngle() - rotaion) <= ERR;
   }
 
   // Called once after isFinished returns true
