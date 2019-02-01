@@ -23,15 +23,32 @@ public class TurnToBall extends Command {
     // eg. requires(chassis);
   }
 
+  /**
+   * A custom logistic curve function designed for the robot
+   * May need to be tuned to particular robots
+   * @param x The value to sigmoid
+   * @return The y-value of the curve at x
+   */
   public double siggy(double x) {
-    if(x == 0) {
+    // decreasing this increases the steepness of the curve
+    final double STEEPNESS_TUNER = 20;
+    // affects the y-intercept
+    final double Y_TUNER = -1;
+    // affects the x-intercept
+    final double X_TUNER = 1;
+    // affects the height of the curve
+    final double HEIGHT_TUNER = -1;
+    // offsets the y-value of the curve
+    // will be multiplied by -1 for negative x-values
+    final double Y_OFFSET = 0;
+    if(x > -ERR && x < ERR) { // A primitive 1D deadzone
       return 0;
     }
     else if(x > 0) {
-      return -(Math.pow(Math.E, x / 45) / (Math.pow(Math.E, x / 45) + 1)) + 1;
+      return HEIGHT_TUNER * (Math.pow(Math.E, x / STEEPNESS_TUNER) / (Math.pow(Math.E, x / STEEPNESS_TUNER) + X_TUNER) + Y_TUNER) + Y_OFFSET;
     }
     else {
-      return -(Math.pow(Math.E, x / 45) / (Math.pow(Math.E, x / 45) + 1)) - 1;
+      return HEIGHT_TUNER * (Math.pow(Math.E, x / STEEPNESS_TUNER) / (Math.pow(Math.E, x / STEEPNESS_TUNER) + X_TUNER) + Y_TUNER) - Y_OFFSET;
     }
   }
 
