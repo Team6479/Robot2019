@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.TCP;
 
-public class TurnToBall extends Command {
+public class DriveToBall extends Command {
   private static final double ERR = 1;
   double rotaion;
   double current;
 
-  public TurnToBall() {
+  public DriveToBall() {
     requires(Robot.tcp);
     requires(Robot.drivetrain);
     requires(Robot.gyro);
@@ -30,6 +30,28 @@ public class TurnToBall extends Command {
    * @return The y-value of the curve at x
    */
   public double sigmoid(double x) {
+    // decreasing this increases the steepness of the curve
+    final double STEEPNESS_TUNER = 20;
+    // affects the y-intercept
+    final double Y_TUNER = -1;
+    // affects the x-intercept
+    final double X_TUNER = 1;
+    // affects the height of the curve
+    final double HEIGHT_TUNER = -1;
+    // offsets the y-value of the curve
+    // will be multiplied by -1 for negative x-values
+    final double Y_OFFSET = 0;
+    if(x > -ERR && x < ERR) { // A primitive 1D deadzone
+      return 0;
+    }
+    else if(x > 0) {
+      return HEIGHT_TUNER * (Math.pow(Math.E, x / STEEPNESS_TUNER) / (Math.pow(Math.E, x / STEEPNESS_TUNER) + X_TUNER) + Y_TUNER) + Y_OFFSET;
+    }
+    else {
+      return HEIGHT_TUNER * (Math.pow(Math.E, x / STEEPNESS_TUNER) / (Math.pow(Math.E, x / STEEPNESS_TUNER) + X_TUNER) + Y_TUNER) - Y_OFFSET;
+    }
+  }
+  public double sigmoid2(double x) {
     // decreasing this increases the steepness of the curve
     final double STEEPNESS_TUNER = 20;
     // affects the y-intercept
