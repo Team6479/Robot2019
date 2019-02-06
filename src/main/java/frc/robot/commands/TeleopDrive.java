@@ -32,9 +32,11 @@ public class TeleopDrive extends Command {
   protected void execute() {
     // Execute arcadeDrive with the x axis and y axis
     scale = (-Controllers.getThrottle() + 1) / 2;
+    // scale = 1;    
     // Robot.drivetrain.arcadeDrive(Robot.oi.controller.getX(Hand.kLeft),
     // Robot.oi.controller.getY(Hand.kLeft));
-    Robot.drivetrain.mecanumDrive(Controllers.getYAxis() * scale, Controllers.getXAxis() * scale, Controllers.getZAxis() * scale);
+    Controllers.checkAxisButton();
+    Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllers.getYAxis() * scale);
   }
 
   // Make this return true when this Command no longer needs to run execute()

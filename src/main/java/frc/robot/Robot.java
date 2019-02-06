@@ -9,7 +9,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.util.Controllers.ControllerType;
+import frc.robot.util.Controllers;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,6 +25,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static OI oi;
+  private SendableChooser<ControllerType> controller;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -30,6 +35,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drivetrain = new Drivetrain();
 
+    controller = new SendableChooser<ControllerType>();
+    controller.addOption(ControllerType.joystick.getKey(), ControllerType.joystick);
+    controller.addOption(ControllerType.xbox.getKey(), ControllerType.xbox);
+    SmartDashboard.putData(ControllerType.name, controller);
     oi = new OI();
   }
 
@@ -84,6 +93,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Controllers.setControllerType(controller.getSelected());
   }
 
   /**
@@ -91,6 +101,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putBoolean("Axis Lock", Controllers.axisIsLocked);
     Scheduler.getInstance().run();
   }
 
