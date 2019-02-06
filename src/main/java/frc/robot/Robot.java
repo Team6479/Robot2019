@@ -103,6 +103,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     SmartDashboard.putData(ControllerType.name, controller);
     Controllers.setControllerType(controller.getSelected());
+    SmartDashboard.putBoolean("Axis Lock", Controllers.axisIsLocked);
     Scheduler.getInstance().run();
   }
 

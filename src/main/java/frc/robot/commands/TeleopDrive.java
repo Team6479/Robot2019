@@ -35,6 +35,7 @@ public class TeleopDrive extends Command {
     // scale = 1;    
     // Robot.drivetrain.arcadeDrive(Robot.oi.controller.getX(Hand.kLeft),
     // Robot.oi.controller.getY(Hand.kLeft));
+    Controllers.checkAxisButton();
     Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllers.getYAxis() * scale);
   }
 

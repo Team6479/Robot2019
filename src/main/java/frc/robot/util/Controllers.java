@@ -37,7 +37,7 @@ public class Controllers {
   }
 
   private static ControllerType controllerType;
-  private static Boolean axisLock = false;
+  public static Boolean axisIsLocked = true;
 
   /**
    * Sets controller type (xbox/joystick)
@@ -45,6 +45,12 @@ public class Controllers {
    */
   public static void setControllerType(ControllerType controllerInput) {
     controllerType = controllerInput;
+  }
+
+  public static void checkAxisButton() {
+    if (Robot.oi.axisLock.wasJustReleased() && controllerType == ControllerType.joystick) {
+      axisIsLocked = !axisIsLocked;
+    }
   }
 
   /**
@@ -56,10 +62,7 @@ public class Controllers {
       //Return the x axis of the left analouge sitck
       return Robot.oi.controller.getY(Hand.kLeft);
     } else if (controllerType == ControllerType.joystick) {
-      if (Robot.oi.axisLock.wasJustPressed()) {
-        axisLock = !axisLock;
-      }
-      if (axisLock) {
+      if (axisIsLocked) {
         return -Math.round(Robot.oi.stick.getRawAxis(JoystickMap.joystickYAxis));
       } else {
         //Return the y axis of the joystick
@@ -80,10 +83,7 @@ public class Controllers {
       //Return the x axis of the left analogue sitck
       return Robot.oi.controller.getX(Hand.kLeft);
     } else if (controllerType == ControllerType.joystick) {
-      if (Robot.oi.axisLock.wasJustPressed()) {
-        axisLock = !axisLock;
-      }
-      if (axisLock) {
+      if (axisIsLocked) {
         return -Math.round(Robot.oi.stick.getRawAxis(JoystickMap.joystickXAxis));
       } else {
         //Return the y axis of the joystick
