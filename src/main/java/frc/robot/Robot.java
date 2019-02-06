@@ -35,11 +35,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drivetrain = new Drivetrain();
 
-    oi = new OI();
-
     controller = new SendableChooser<ControllerType>();
-    controller.setDefaultOption(ControllerType.joystick.getKey(), ControllerType.joystick);
+    controller.addOption(ControllerType.joystick.getKey(), ControllerType.joystick);
     controller.addOption(ControllerType.xbox.getKey(), ControllerType.xbox);
+
+    oi = new OI();
   }
 
   /**
@@ -93,7 +93,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    
+    Controllers.setControllerType(controller.getSelected());
   }
 
   /**
@@ -102,7 +102,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     SmartDashboard.putData(ControllerType.name, controller);
-    Controllers.setControllerType(controller.getSelected());
     SmartDashboard.putBoolean("Axis Lock", Controllers.axisIsLocked);
     Scheduler.getInstance().run();
   }
