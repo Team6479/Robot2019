@@ -11,6 +11,7 @@ import frc.robot.drivers.Joystick;
 import frc.robot.util.JoystickMap;
 import frc.robot.drivers.XboxController;
 import frc.robot.util.XboxMap;
+import robot.xbox.ButtonTracker;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -47,6 +48,7 @@ public class OI {
 
   //Joyctick object
   public Joystick stick = new Joystick(JoystickMap.joystick);
+  public ButtonTracker axisLock = new ButtonTracker(stick, JoystickMap.joystickButton12);
 
   //Xbox controller object
   public XboxController controller = new XboxController(XboxMap.controller);

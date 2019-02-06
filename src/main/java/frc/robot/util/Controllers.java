@@ -17,7 +17,7 @@ import frc.robot.Robot;
  */
 public class Controllers {
   /**
-   * Enum to handle controller types such as Xbox, Joystick, and others if needed.
+   * Enum to handle controller types such as Xbox, Joystick, and others if needed. Also has code for SmartDashboard
    */
   public static enum ControllerType {
     xbox("XBOX"),
@@ -37,6 +37,7 @@ public class Controllers {
   }
 
   private static ControllerType controllerType;
+  private static Boolean axisLock = false;
 
   /**
    * Sets controller type (xbox/joystick)
@@ -55,8 +56,15 @@ public class Controllers {
       //Return the x axis of the left analouge sitck
       return Robot.oi.controller.getY(Hand.kLeft);
     } else if (controllerType == ControllerType.joystick) {
-      //Return the y axis of the joyctick
-      return -Robot.oi.stick.getRawAxis(JoystickMap.joystickYAxis);
+      if (Robot.oi.axisLock.wasJustPressed()) {
+        axisLock = !axisLock;
+      }
+      if (axisLock) {
+        return -Math.round(Robot.oi.stick.getRawAxis(JoystickMap.joystickYAxis));
+      } else {
+        //Return the y axis of the joystick
+        return -Robot.oi.stick.getRawAxis(JoystickMap.joystickYAxis);
+      }
     } else {
       //Default return
       return 0;
@@ -72,8 +80,15 @@ public class Controllers {
       //Return the x axis of the left analogue sitck
       return Robot.oi.controller.getX(Hand.kLeft);
     } else if (controllerType == ControllerType.joystick) {
-      //Return the x axis of the joystick
-      return Robot.oi.stick.getRawAxis(JoystickMap.joystickXAxis);
+      if (Robot.oi.axisLock.wasJustPressed()) {
+        axisLock = !axisLock;
+      }
+      if (axisLock) {
+        return -Math.round(Robot.oi.stick.getRawAxis(JoystickMap.joystickXAxis));
+      } else {
+        //Return the y axis of the joystick
+        return -Robot.oi.stick.getRawAxis(JoystickMap.joystickXAxis);
+      }
     } else {
       //Defualt return
       return 0;
