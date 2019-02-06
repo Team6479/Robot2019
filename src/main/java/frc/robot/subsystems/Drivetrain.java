@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -124,7 +123,12 @@ public class Drivetrain extends Subsystem {
    * @author Leo Wilson
    */
   public void mecanumDrive(double speedFB, double speedLR, double rotation) {
-    rawMecnumDrive(speedFB + speedLR + rotation, speedFB - speedLR + rotation, speedFB - speedLR - rotation, speedFB + speedLR - rotation);
+    rawMecnumDrive(
+      speedFB + speedLR + rotation,                // Left Front
+      speedFB - speedLR + rotation,                // Left Back
+      speedFB - speedLR - rotation,                // Right Front
+      speedFB + speedLR - rotation                 // Right Back
+    );
   }
 
   public void mecanumDrivePolar(double magnitude, double angle, double rotation) {
