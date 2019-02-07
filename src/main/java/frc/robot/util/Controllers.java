@@ -113,8 +113,13 @@ public class Controllers {
       //Return the combined values of both xbox triggers
       return Robot.oi.controller.getTriggerAxis(Hand.kRight) - Robot.oi.controller.getTriggerAxis(Hand.kLeft);
     } else if (controllerType == ControllerType.joystick) {
-      //Return the z axis (rotation) of the joystick
-      return Robot.oi.stick.getRawAxis(JoystickMap.joystickZAxis);
+      if (axisIsLocked) {
+        //Stops z axis movement when locked
+        return 0;
+      } else {
+        //Return the z axis (rotation) of the joystick
+        return Robot.oi.stick.getRawAxis(JoystickMap.joystickZAxis);
+      }
     } else {
       //Default return
       return 0;
