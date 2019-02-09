@@ -123,12 +123,7 @@ public class Drivetrain extends Subsystem {
    * @author Leo Wilson
    */
   public void mecanumDrive(double speedLR, double rotation, double speedFB) {
-    rawMecnumDrive(
-      speedFB + speedLR + rotation,                // Left Front
-      speedFB - speedLR + rotation,                // Left Back
-      speedFB - speedLR - rotation,                // Right Front
-      speedFB + speedLR - rotation                 // Right Back
-    );
+    rawMecnumDrive((speedFB + speedLR + rotation), (speedFB - speedLR + rotation), (speedFB - speedLR - rotation), (speedFB + speedLR - rotation));
   }
 
   public void mecanumDrivePolar(double magnitude, double angle, double rotation) {
