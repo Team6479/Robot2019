@@ -132,7 +132,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public void mecanumDrivePolar(double magnitude, double angle, double rotation) {
-    mecanumDrive(magnitude * Math.sin(angle * (Math.PI / 180.0)), (magnitude * Math.cos(angle * (Math.PI / 180.0))), rotation);
+    mecanumDrive(magnitude * Math.sin(angle * (Math.PI / 180.0)), rotation, (magnitude * Math.cos(angle * (Math.PI / 180.0))));
   }
 
   public void resetEncoders() {
