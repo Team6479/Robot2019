@@ -12,8 +12,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.util.Controllers.ControllerType;
+import frc.robot.subsystems.Gyro;
 import frc.robot.util.Controllers;
+import frc.robot.util.Controllers.ControllerType;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,6 +26,7 @@ import frc.robot.util.Controllers;
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static OI oi;
+  public static Gyro gyro;
   private SendableChooser<ControllerType> controller;
 
   /**
@@ -34,6 +36,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new Drivetrain();
+    gyro = new Gyro();
 
     controller = new SendableChooser<ControllerType>();
     controller.addOption(ControllerType.joystick.getKey(), ControllerType.joystick);
