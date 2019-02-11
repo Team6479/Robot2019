@@ -7,6 +7,8 @@
 
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+
 /**
  * The XboxMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -16,4 +18,6 @@ package frc.robot.util;
 public class XboxMap {
   // Controllers
   public static final int controller = 0;
+  public static final Hand leftHand = Hand.kLeft;
+  public static final Hand rightHand = Hand.kRight;
 }
