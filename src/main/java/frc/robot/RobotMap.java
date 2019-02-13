@@ -26,14 +26,14 @@ public class RobotMap {
 
   // PWM
   // Drivetrain Motors
-  public static final int LEFT_FRONT = 0;
-  public static final int LEFT_BACK = 1;
-  public static final int RIGHT_FRONT = 2;
-  public static final int RIGHT_BACK = 3;
 
   // Pneumatics
   public static final int COMPRESSOR = 0;
   public static final int SOLENOID_PLACEHOLDER = 0;
   public static final int SOLENOID_HATCH_PIVOT = 5;
   public static final int SOLENOID_HATCH_GRABBER = 6;
+  public static final int LEFT_FRONT = 1;
+  public static final int LEFT_BACK = 3;
+  public static final int RIGHT_FRONT = 0;
+  public static final int RIGHT_BACK = 2;
 }
