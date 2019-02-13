@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 
     gyro = new Gyro();
 
-    Controllers.setControllerType(Controllers.ControllerType.XBOX);
+    Controllers.setControllerType(Controllers.ControllerType.xbox);
     pneumatics = new Pneumatics();
 
     Controllers.setControllerType(Controllers.ControllerType.xbox);
