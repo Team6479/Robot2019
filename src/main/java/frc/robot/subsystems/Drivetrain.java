@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
@@ -39,6 +40,11 @@ public class Drivetrain extends Subsystem {
   private final double WHEEL_DIAMETER = 0.1524;
   // Cycles per rotation of the encoder
   private final double CPR = 4096;
+
+  // the magnitude at which mecanum correction kicks in
+  private final double MECANUM_CORRECTION_START = 0.1;
+
+  private boolean reset = false;
 
   // Declare 4 Motor Controllers
   // Left Front Motor (Master)
@@ -124,7 +130,30 @@ public class Drivetrain extends Subsystem {
    * @author Leo Wilson
    */
   public void mecanumDrive(double speedLR, double rotation, double speedFB) {
-    rotation -= Robot.gyro.getAngle() / 180;
+    double g = Robot.gyro.getAngle();
+    SmartDashboard.putNumber("gyro", g);
+    if(reset) {
+      Robot.gyro.reset();
+    }
+    else {
+      reset = true;
+    }
+    if(Math.abs(speedLR) > MECANUM_CORRECTION_START) {
+      rotation -= g / 18;
+      SmartDashboard.putNumber("New Rotation", rotation);
+      // Robot.gyro.reset();
+    }
+
+    SmartDashboard.putNumber("Velocity: Left Front", getVelocity(Side.Left, Place.Front, Unit.Meters));
+    SmartDashboard.putNumber("Velocity: Left Back", getVelocity(Side.Left, Place.Back, Unit.Meters));
+    SmartDashboard.putNumber("Velocity: Right Front", getVelocity(Side.Right, Place.Front, Unit.Meters));
+    SmartDashboard.putNumber("Velocity: Right Back", getVelocity(Side.Right, Place.Back, Unit.Meters));
+
+    SmartDashboard.putNumber("Position: Left Front", getPosition(Side.Left, Place.Front, Unit.Meters));
+    SmartDashboard.putNumber("Position: Left Back", getPosition(Side.Left, Place.Back, Unit.Meters));
+    SmartDashboard.putNumber("Position: Right Front", getPosition(Side.Right, Place.Front, Unit.Meters));
+    SmartDashboard.putNumber("Position: Right Back", getPosition(Side.Right, Place.Back, Unit.Meters));
+
     rawMecnumDrive((speedFB + speedLR + rotation), (speedFB - speedLR + rotation), (speedFB - speedLR - rotation), (speedFB + speedLR - rotation));
   }
 
