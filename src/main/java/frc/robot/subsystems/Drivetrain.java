@@ -149,10 +149,15 @@ public class Drivetrain extends Subsystem {
     SmartDashboard.putNumber("Velocity: Right Front", getVelocity(Side.Right, Place.Front, Unit.Meters));
     SmartDashboard.putNumber("Velocity: Right Back", getVelocity(Side.Right, Place.Back, Unit.Meters));
 
-    SmartDashboard.putNumber("Position: Left Front", getPosition(Side.Left, Place.Front, Unit.Meters));
+    SmartDashboard.putNumber("Left Front", (speedFB + speedLR + rotation));
+    SmartDashboard.putNumber("Left Back", (speedFB - speedLR + rotation));
+    SmartDashboard.putNumber("Right Front", (speedFB - speedLR - rotation));
+    SmartDashboard.putNumber("Right Back", (speedFB + speedLR - rotation));
+
+    /*SmartDashboard.putNumber("Position: Left Front", getPosition(Side.Left, Place.Front, Unit.Meters));
     SmartDashboard.putNumber("Position: Left Back", getPosition(Side.Left, Place.Back, Unit.Meters));
     SmartDashboard.putNumber("Position: Right Front", getPosition(Side.Right, Place.Front, Unit.Meters));
-    SmartDashboard.putNumber("Position: Right Back", getPosition(Side.Right, Place.Back, Unit.Meters));
+    SmartDashboard.putNumber("Position: Right Back", getPosition(Side.Right, Place.Back, Unit.Meters));*/
 
     rawMecnumDrive((speedFB + speedLR + rotation), (speedFB - speedLR + rotation), (speedFB - speedLR - rotation), (speedFB + speedLR - rotation));
   }
