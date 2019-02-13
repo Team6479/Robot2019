@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Pneumatics;
 import frc.robot.util.Controllers.ControllerType;
 import frc.robot.util.Controllers;
 
@@ -25,6 +26,7 @@ import frc.robot.util.Controllers;
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static OI oi;
+  public static Pneumatics pneumatics;
   private SendableChooser<ControllerType> controller;
 
   /**
@@ -37,6 +39,9 @@ public class Robot extends TimedRobot {
 
     oi = new OI();
 
+    pneumatics = new Pneumatics();
+
+    Controllers.setControllerType(Controllers.ControllerType.xbox);
     controller = new SendableChooser<ControllerType>();
     controller.setDefaultOption(ControllerType.joystick.getKey(), ControllerType.joystick);
     controller.addOption(ControllerType.xbox.getKey(), ControllerType.xbox);
