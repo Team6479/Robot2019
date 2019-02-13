@@ -35,9 +35,7 @@ public class Robot extends TimedRobot {
 
     oi = new OI();
 
-    pneumatics = new Pneumatics();
-
-    Controllers.setControllerType(Controllers.ControllerType.XBOX);
+    Controllers.setControllerType(Controllers.ControllerType.JOYSTICK);
   }
 
   /**
