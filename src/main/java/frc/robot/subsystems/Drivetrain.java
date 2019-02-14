@@ -43,13 +43,13 @@ public class Drivetrain extends Subsystem {
 
   // Declare 4 Motor Controllers
   // Left Front Motor (Master)
-  private TalonSRX leftMaster;
+  public TalonSRX leftMaster;
   // Left Back Motor (Slave)
-  private TalonSRX leftSlave;
+  public TalonSRX leftSlave;
   // Right Front Motor (Master)
-  private TalonSRX rightMaster;
+  public TalonSRX rightMaster;
   // Right Back Motor (Slave)
-  private TalonSRX rightSlave;
+  public TalonSRX rightSlave;
 
   // Declare 4 Motor Controllers (but different i swear)
   // Left Front Motor (Master)
