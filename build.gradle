@@ -52,7 +52,7 @@ repositories {
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
-    compile group: 'com.github.team6479', name: 'RobotLibrary', version: '1.0.0'
+    compile group: 'com.github.team6479', name: 'RobotLibrary', version: '1.1.0'
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
