@@ -5,8 +5,8 @@ jdk:
   - oraclejdk11
 
 script:
-  - gradle check
-  - gradle build
+  - ./gradlew check
+  - ./gradlew build
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
