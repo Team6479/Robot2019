@@ -40,11 +40,12 @@ public class Drivetrain extends Subsystem {
   private final double WHEEL_DIAMETER = 0.1524;
   // Cycles per rotation of the encoder
   private final double CPR = 4096;
-  // The theoretical RPM of the wheel
-  public final int RPM = 500;
+  // The theoretical max RPM of the wheel
+  // Raw RPM of the motor * by gear ratio of gearbox
+  public final double RPM = 5840 / 10.71;
 
   // The number of PID intervals / minute
-  public final int INTERVAL = 600;
+  public final double INTERVAL = 600;
 
   // the magnitude at which mecanum correction kicks in
   private final double MECANUM_CORRECTION_START = 0.1;
