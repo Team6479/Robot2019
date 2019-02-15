@@ -40,6 +40,11 @@ public class Drivetrain extends Subsystem {
   private final double WHEEL_DIAMETER = 0.1524;
   // Cycles per rotation of the encoder
   private final double CPR = 4096;
+  // The theoretical RPM of the wheel
+  public final int RPM = 500;
+
+  // The number of PID intervals / minute
+  public final int INTERVAL = 600;
 
   // the magnitude at which mecanum correction kicks in
   private final double MECANUM_CORRECTION_START = 0.1;
@@ -55,6 +60,27 @@ public class Drivetrain extends Subsystem {
   public TalonSRX rightMaster;
   // Right Back Motor (Slave)
   public TalonSRX rightSlave;
+
+  // which PID slot to use
+  public static final int kSlotIdx = 0;
+  // which PID loop to use
+  public static final int kPIDLoopIdx = 0;
+  /**
+	 * Set to zero to skip waiting for confirmation, set to nonzero to wait and
+	 * report to DS if action fails.
+	 */
+  public static final int kTimeoutMs = 0;
+
+  // Gains
+  // Tune them to modify the behaviour of the PID loop
+  public final double kP = 0.25;
+	public final double kI = 0.001;
+	public final double kD = 20;
+	public final double kF = 1023.0/7200.0;
+	public final int kIzone = 300;
+  public final double kPeakOutput = 1;
+  public final int timeoutMs = 0;
+  public final int pidID = 0;
 
   public Drivetrain() {
     // Init Motors
@@ -73,13 +99,41 @@ public class Drivetrain extends Subsystem {
 
     TalonSRXProfile.applyTalonSRXProfile(new DefaultTalonSRXProfile(), leftMaster, leftSlave, rightMaster, rightSlave);
 
-    // Add Mag Encoders
-    int timeoutMs = 0;
-    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
-    leftSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
-    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
-    rightSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
+    configTalonPID(leftMaster);
+    configTalonPID(leftSlave);
+    configTalonPID(rightMaster);
+    configTalonPID(rightSlave);
+
     resetEncoders();
+  }
+
+  /**
+   * Configures the PID loop according to the constants found in this class
+   * @param talon The TalonSRX to configure
+   * @author Leo Wilson
+   */
+  private void configTalonPID(TalonSRX talon) {
+    // Add Mag Encoders
+    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
+    leftSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
+    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
+    rightSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
+
+    // Configure the peak and nominal outputs of the motors
+    talon.configNominalOutputForward(0, timeoutMs);
+		talon.configNominalOutputReverse(0, timeoutMs);
+		talon.configPeakOutputForward(1, timeoutMs);
+    talon.configPeakOutputReverse(-1, timeoutMs);
+
+    // Configure the gains
+    talon.config_kF(pidID, kF, timeoutMs);
+		talon.config_kP(pidID, kP, timeoutMs);
+		talon.config_kI(pidID, kI, timeoutMs);
+    talon.config_kD(pidID, kD, timeoutMs);
+  }
+
+  public double percentToUnits(double percent, double interval, double rpm, double cpr) {
+    return (percent * rpm * cpr) / interval;
   }
 
   @Override
@@ -116,10 +170,10 @@ public class Drivetrain extends Subsystem {
    * @param rightSlaveSpeed What it looks like
    */
   public void rawMecnumDrive(double leftMasterSpeed, double leftSlaveSpeed, double rightMasterSpeed, double rightSlaveSpeed) {
-    leftMaster.set(ControlMode.PercentOutput, leftMasterSpeed);
-    leftSlave.set(ControlMode.PercentOutput, leftSlaveSpeed);
-    rightMaster.set(ControlMode.PercentOutput, rightMasterSpeed);
-    rightSlave.set(ControlMode.PercentOutput, rightSlaveSpeed);
+    leftMaster.set(ControlMode.Velocity, percentToUnits(leftMasterSpeed, INTERVAL, RPM, CPR));
+    leftSlave.set(ControlMode.Velocity, percentToUnits(leftSlaveSpeed, INTERVAL, RPM, CPR));
+    rightMaster.set(ControlMode.Velocity, percentToUnits(rightMasterSpeed, INTERVAL, RPM, CPR));
+    rightSlave.set(ControlMode.Velocity, percentToUnits(rightSlaveSpeed, INTERVAL, RPM, CPR));
   }
 
   /**
