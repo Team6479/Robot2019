@@ -8,9 +8,10 @@
 package frc.robot;
 
 import frc.robot.drivers.Joystick;
-import frc.robot.util.JoystickMap;
 import frc.robot.drivers.XboxController;
+import frc.robot.util.JoystickMap;
 import frc.robot.util.XboxMap;
+import robot.controllers.ButtonTracker;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -44,10 +45,18 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+  public Joystick stick;
+  public ButtonTracker axisLock;
+  public XboxController controller;
 
-  //Joyctick object
-  public Joystick stick = new Joystick(JoystickMap.joystick);
+  public void initalizeJoystick() {
+    //Joyctick object
+    stick = new Joystick(JoystickMap.joystick);
+    axisLock = new ButtonTracker(stick, JoystickMap.joystickButton12);
+  }
 
-  //Xbox controller object
-  public XboxController controller = new XboxController(XboxMap.controller);
+  public void initalizeXbox() {
+    //Xbox controller object
+    controller = new XboxController(XboxMap.controller);
+  }
 }
