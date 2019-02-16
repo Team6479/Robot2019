@@ -13,10 +13,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.HatchPivot;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.TCP;
-import frc.robot.util.Controllers;
-import frc.robot.util.Controllers.ControllerType;
+import frc.robot.util.control.Controllers;
+import frc.robot.util.control.Controllers.ControllerType;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,6 +33,8 @@ public class Robot extends TimedRobot {
   public static TCP tcp;
   public static Gyro gyro;
   public static Pneumatics pneumatics;
+  public static HatchPivot hatchPivot;
+  public static HatchGrabber hatchGrabber;
   private SendableChooser<ControllerType> controller;
 
   /**
@@ -40,9 +44,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new Drivetrain();
-    gyro = new Gyro();
-    pneumatics = new Pneumatics();
+
+    oi = new OI();
+
     tcp = new TCP();
+
+    gyro = new Gyro();
+
+    pneumatics = new Pneumatics();
+    hatchPivot = new HatchPivot();
+    hatchGrabber = new HatchGrabber();
 
     Controllers.setControllerType(Controllers.ControllerType.xbox);
     controller = new SendableChooser<ControllerType>();

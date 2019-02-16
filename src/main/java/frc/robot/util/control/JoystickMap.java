@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.util;
+package frc.robot.util.control;
 
 /**
  * The JoystickMap is a mapping from the ports sensors and actuators are wired into
@@ -14,9 +14,6 @@ package frc.robot.util;
  * floating around.
  */
 public class JoystickMap {
-  // Controllers
-  public static final int joystick = 0;
-
   // Joystick Buttons
   public static final int joystickButton1 = 1;
   public static final int joystickButton2 = 2;
