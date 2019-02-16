@@ -42,6 +42,6 @@ public class TogglableButton {
     }
 
     private ButtonTracker button;
-    private Boolean buttonState;
+    public Boolean buttonState;
     private Boolean buttonWasJustPressed;
 }

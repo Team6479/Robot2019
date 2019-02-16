@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.control.Controllers;
@@ -22,6 +23,9 @@ public class HatchGrabber extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    if(Robot.hatchGrabber.grabberSol.get() == DoubleSolenoid.Value.kReverse) {
+      Robot.oi.buttons.get(Robot.oi.hatchGrabber).buttonState = true;
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run

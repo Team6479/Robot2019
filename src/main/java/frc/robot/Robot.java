@@ -55,6 +55,9 @@ public class Robot extends TimedRobot {
     hatchPivot = new HatchPivot();
     hatchGrabber = new HatchGrabber();
 
+    hatchPivot.pivotForward();
+    hatchGrabber.grab();
+
     Controllers.setControllerType(Controllers.ControllerType.xbox);
     controller = new SendableChooser<ControllerType>();
     controller.addOption(ControllerType.joystick.getKey(), ControllerType.joystick);
