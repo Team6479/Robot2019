@@ -22,6 +22,7 @@ public class TogglableButton {
     public TogglableButton(GenericHID controller, int port) {
         this.button = new ButtonTracker(controller, port);
         buttonState = false;
+        buttonWasJustPressed = false;
     }
 
     /**
@@ -35,7 +36,7 @@ public class TogglableButton {
         if (button.isPressed() && !buttonWasJustPressed) {
             buttonState = !buttonState;
             buttonWasJustPressed = true;
-        } else if (buttonWasJustPressed) {
+        } else if (!button.isPressed() && buttonWasJustPressed) {
             buttonWasJustPressed = false;
         }
     }
