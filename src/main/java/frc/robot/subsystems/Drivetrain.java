@@ -11,10 +11,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.talonsrxprofiles.DefaultTalonSRXProfile;
@@ -41,6 +41,11 @@ public class Drivetrain extends Subsystem {
   // Cycles per rotation of the encoder
   private final double CPR = 4096;
 
+  // the magnitude at which mecanum correction kicks in
+  private final double MECANUM_CORRECTION_START = 0.1;
+
+  private boolean reset = false;
+
   // Declare 4 Motor Controllers
   // Left Front Motor (Master)
   public TalonSRX leftMaster;
@@ -51,30 +56,12 @@ public class Drivetrain extends Subsystem {
   // Right Back Motor (Slave)
   public TalonSRX rightSlave;
 
-  // Declare 4 Motor Controllers (but different i swear)
-  // Left Front Motor (Master)
-  private WPI_TalonSRX leftMasterPWM;
-  // Left Back Motor (Slave)
-  private WPI_TalonSRX leftSlavePWM;
-  // Right Front Motor (Master)
-  private WPI_TalonSRX rightMasterPWM;
-  // Right Back Motor (Slave)
-  private WPI_TalonSRX rightSlavePWM;
-
-  private MecanumDrive robotDrive;
-
   public Drivetrain() {
     // Init Motors
     leftMaster = new TalonSRX(RobotMap.LEFT_FRONT);
     rightMaster = new TalonSRX(RobotMap.RIGHT_FRONT);
     leftSlave = new TalonSRX(RobotMap.LEFT_BACK);
     rightSlave = new TalonSRX(RobotMap.RIGHT_BACK);
-    // init the same motors but different
-    leftMasterPWM = new WPI_TalonSRX(RobotMap.LEFT_FRONT);
-    rightMasterPWM = new WPI_TalonSRX(RobotMap.RIGHT_FRONT);
-    leftSlavePWM = new WPI_TalonSRX(RobotMap.LEFT_BACK);
-    rightSlavePWM = new WPI_TalonSRX(RobotMap.RIGHT_BACK);
-    robotDrive = new MecanumDrive(leftMasterPWM, leftSlavePWM, rightMasterPWM, rightSlavePWM);
 
     // Set output direction
     leftMaster.setInverted(false);
@@ -122,15 +109,17 @@ public class Drivetrain extends Subsystem {
   }
 
   /**
-   * Drives using the full capabilities of the Mecanum wheels
-   * @param speedFB The forward-backward speed
-   * @param speedLR The left-right speed
-   * @param rotation The rotation
-   * @author Leo Wilson
+   * Sets the motors in a mecanum-compatible way
+   * @param leftMasterSpeed What it looks like
+   * @param leftSlaveSpeed What it looks like
+   * @param rightMasterSpeed What it looks like
+   * @param rightSlaveSpeed What it looks like
    */
-  public void mecanumDrive(double speedFB, double speedLR, double rotation) {
-    // leftMasterPWM.set(speedFB);
-    robotDrive.driveCartesian(speedFB, speedLR, rotation);
+  public void rawMecnumDrive(double leftMasterSpeed, double leftSlaveSpeed, double rightMasterSpeed, double rightSlaveSpeed) {
+    leftMaster.set(ControlMode.PercentOutput, leftMasterSpeed);
+    leftSlave.set(ControlMode.PercentOutput, leftSlaveSpeed);
+    rightMaster.set(ControlMode.PercentOutput, rightMasterSpeed);
+    rightSlave.set(ControlMode.PercentOutput, rightSlaveSpeed);
   }
 
   /**
@@ -140,8 +129,41 @@ public class Drivetrain extends Subsystem {
    * @param rotation The rotation
    * @author Leo Wilson
    */
+  public void mecanumDrive(double speedLR, double rotation, double speedFB) {
+    double g = Robot.gyro.getAngle();
+    SmartDashboard.putNumber("gyro", g);
+    if(reset) {
+      Robot.gyro.reset();
+    }
+    else {
+      reset = true;
+    }
+    /*if(Math.abs(speedLR) > MECANUM_CORRECTION_START) {
+      rotation -= g / 18;
+      SmartDashboard.putNumber("New Rotation", rotation);
+      // Robot.gyro.reset();
+    }*/
+
+    SmartDashboard.putNumber("Velocity: Left Front", getVelocity(Side.Left, Place.Front, Unit.Meters));
+    SmartDashboard.putNumber("Velocity: Left Back", getVelocity(Side.Left, Place.Back, Unit.Meters));
+    SmartDashboard.putNumber("Velocity: Right Front", getVelocity(Side.Right, Place.Front, Unit.Meters));
+    SmartDashboard.putNumber("Velocity: Right Back", getVelocity(Side.Right, Place.Back, Unit.Meters));
+
+    SmartDashboard.putNumber("Left Front", (speedFB + speedLR + rotation));
+    SmartDashboard.putNumber("Left Back", (speedFB - speedLR + rotation));
+    SmartDashboard.putNumber("Right Front", (speedFB - speedLR - rotation));
+    SmartDashboard.putNumber("Right Back", (speedFB + speedLR - rotation));
+
+    /*SmartDashboard.putNumber("Position: Left Front", getPosition(Side.Left, Place.Front, Unit.Meters));
+    SmartDashboard.putNumber("Position: Left Back", getPosition(Side.Left, Place.Back, Unit.Meters));
+    SmartDashboard.putNumber("Position: Right Front", getPosition(Side.Right, Place.Front, Unit.Meters));
+    SmartDashboard.putNumber("Position: Right Back", getPosition(Side.Right, Place.Back, Unit.Meters));*/
+
+    rawMecnumDrive((speedFB + speedLR + rotation), (speedFB - speedLR + rotation), (speedFB - speedLR - rotation), (speedFB + speedLR - rotation));
+  }
+
   public void mecanumDrivePolar(double magnitude, double angle, double rotation) {
-    robotDrive.drivePolar(magnitude, angle, rotation);
+    mecanumDrive(magnitude * Math.sin(angle * (Math.PI / 180.0)), rotation, (magnitude * Math.cos(angle * (Math.PI / 180.0))));
   }
 
   public void resetEncoders() {

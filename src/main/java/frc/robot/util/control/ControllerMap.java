@@ -5,7 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.util;
+package frc.robot.util.control;
+
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
  * The XboxMap is a mapping from the ports sensors and actuators are wired into
@@ -13,7 +15,10 @@ package frc.robot.util;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public class XboxMap {
+public class ControllerMap {
   // Controllers
   public static final int controller = 0;
+  public static final Hand leftHand = Hand.kLeft;
+  public static final Hand rightHand = Hand.kRight;
+  public static final int joystick = 0;
 }
