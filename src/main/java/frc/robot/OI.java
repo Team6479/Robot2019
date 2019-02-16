@@ -67,8 +67,8 @@ public class OI {
   public void initalizeXbox() {
     //Xbox controller object
     controller = new XboxController(ControllerMap.controller);
-    buttons.add(new TogglableButton(controller, XboxMap.YButton));
     buttons.add(new TogglableButton(controller, XboxMap.AButton));
+    buttons.add(new TogglableButton(controller, XboxMap.YButton));
     buttons.add(new TogglableButton(controller, XboxMap.RightBumper));
     buttons.add(new TogglableButton(controller, XboxMap.LeftBumper));
 
