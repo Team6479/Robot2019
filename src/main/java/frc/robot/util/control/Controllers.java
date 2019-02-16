@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.util;
+package frc.robot.util.control;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.Robot;
@@ -53,13 +53,20 @@ public class Controllers {
     }
   }
 
-  public static void checkAxisButton() {
-    if (controllerType == ControllerType.joystick && Robot.oi.axisLock.isPressed() && !axisButtonWasJustPressed) {
-      axisIsLocked = !axisIsLocked;
-      axisButtonWasJustPressed = true;
-    } else if (controllerType == ControllerType.joystick && !Robot.oi.axisLock.isPressed()) {
-      axisButtonWasJustPressed = false;
+  public static void updateButtons() {
+    for (int i = 0; i < Robot.oi.buttons.size(); i++) {
+      Robot.oi.buttons.get(i).updateButton();
     }
+    // if (controllerType == ControllerType.joystick && Robot.oi.axisLock.isPressed() && !axisButtonWasJustPressed) {
+    //   axisIsLocked = !axisIsLocked;
+    //   axisButtonWasJustPressed = true;
+    // } else if (controllerType == ControllerType.joystick && !Robot.oi.axisLock.isPressed()) {
+    //   axisButtonWasJustPressed = false;
+    // }
+  }
+
+  public static Boolean checkButtonStatus(int index) {
+    return Robot.oi.buttons.get(index).getButtonState();
   }
 
   /**
