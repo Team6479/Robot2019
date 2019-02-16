@@ -13,8 +13,6 @@ import frc.robot.Robot;
 import frc.robot.util.control.Controllers;
 
 public class HatchGrabber extends Command {
-  public boolean state;
-  public boolean checked;
 
   public HatchGrabber() {
     requires(Robot.hatchGrabber);
@@ -24,7 +22,7 @@ public class HatchGrabber extends Command {
   @Override
   protected void initialize() {
     if(Robot.hatchGrabber.grabberSol.get() == DoubleSolenoid.Value.kReverse) {
-      Robot.oi.buttons.get(Robot.oi.hatchGrabber).buttonState = true;
+      Robot.oi.buttons.get(Robot.oi.hatchGrabber).setButtonState(true);
     }
   }
 

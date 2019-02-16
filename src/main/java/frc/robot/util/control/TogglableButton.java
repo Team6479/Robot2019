@@ -41,7 +41,11 @@ public class TogglableButton {
         }
     }
 
+    public void setButtonState(Boolean newState) {
+        buttonState = newState;
+    }
+
     private ButtonTracker button;
-    public Boolean buttonState;
+    private Boolean buttonState;
     private Boolean buttonWasJustPressed;
 }
