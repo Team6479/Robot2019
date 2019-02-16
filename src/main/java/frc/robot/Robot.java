@@ -17,8 +17,8 @@ import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.HatchPivot;
 import frc.robot.subsystems.TCP;
 import frc.robot.subsystems.Pneumatics;
-import frc.robot.util.Controllers.ControllerType;
-import frc.robot.util.Controllers;
+import frc.robot.util.control.Controllers.ControllerType;
+import frc.robot.util.control.Controllers;
 
 /**
  * The VM is configured to automatically run this class, and to call the
