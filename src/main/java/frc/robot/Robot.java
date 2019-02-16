@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.HatchPivot;
 import frc.robot.subsystems.TCP;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.util.control.Controllers.ControllerType;
@@ -31,6 +33,8 @@ public class Robot extends TimedRobot {
   public static TCP tcp;
   public static Gyro gyro;
   public static Pneumatics pneumatics;
+  public static HatchPivot hatchPivot;
+  public static HatchGrabber hatchGrabber;
   private SendableChooser<ControllerType> controller;
 
   /**
@@ -47,8 +51,9 @@ public class Robot extends TimedRobot {
 
     gyro = new Gyro();
 
-    Controllers.setControllerType(Controllers.ControllerType.xbox);
     pneumatics = new Pneumatics();
+    hatchPivot = new HatchPivot();
+    hatchGrabber = new HatchGrabber();
 
     Controllers.setControllerType(Controllers.ControllerType.xbox);
     controller = new SendableChooser<ControllerType>();
