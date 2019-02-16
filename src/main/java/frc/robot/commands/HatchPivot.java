@@ -12,8 +12,13 @@ import frc.robot.Robot;
 import frc.robot.util.control.Controllers;
 
 public class HatchPivot extends Command {
+  public boolean state;
+  public boolean checked;
+  
   public HatchPivot() {
     requires(Robot.hatchPivot);
+    state = false;
+    checked = false;
   }
 
   // Called just before this Command runs the first time
@@ -24,10 +29,17 @@ public class HatchPivot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Controllers.checkButtonStatus(Robot.oi.hatchPivot)) {
-      //Code here
+    if (Controllers.checkButtonStatus(Robot.oi.hatchPivot) && !checked) {
+      if(state) {
+        Robot.hatchPivot.pivotForward();
+      }
+      else {
+        Robot.hatchPivot.pivotBack();
+      }
+      state = !state;
+      checked = true;
     } else {
-      //Code here
+      checked = false;
     }
   }
 

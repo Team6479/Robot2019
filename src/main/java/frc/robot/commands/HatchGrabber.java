@@ -12,6 +12,9 @@ import frc.robot.Robot;
 import frc.robot.util.control.Controllers;
 
 public class HatchGrabber extends Command {
+  public boolean state;
+  public boolean checked;
+
   public HatchGrabber() {
     requires(Robot.hatchGrabber);
   }
@@ -25,9 +28,16 @@ public class HatchGrabber extends Command {
   @Override
   protected void execute() {
     if (Controllers.checkButtonStatus(Robot.oi.hatchGrabber)) {
-      //Code here
+      if(state) {
+        Robot.hatchPivot.pivotForward();
+      }
+      else {
+        Robot.hatchPivot.pivotBack();
+      }
+      state = !state;
+      checked = true;
     } else {
-      //Code here
+      checked = false;
     }
   }
 
