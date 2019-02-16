@@ -53,6 +53,10 @@ public class OI {
   public ButtonTracker axisLock;
   public XboxController controller;
   public ArrayList<TogglableButton> buttons = new ArrayList<TogglableButton>();
+  public final int hatchPivot = 0;
+  public final int hatchGrabber = 1;
+  public final int climbUp = 2;
+  public final int climbDown = 3;
 
   public void initalizeJoystick() {
     //Joyctick object
