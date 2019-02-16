@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.util.Controllers;
+import frc.robot.util.control.Controllers;
 
 /**
  * An example command. You can replace me with your own command.
@@ -35,7 +35,7 @@ public class TeleopDrive extends Command {
     // scale = 1;    
     // Robot.drivetrain.arcadeDrive(Robot.oi.controller.getX(Hand.kLeft),
     // Robot.oi.controller.getY(Hand.kLeft));
-    Controllers.checkAxisButton();
+    Controllers.updateButtons();
     Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllers.getYAxis() * scale);
   }
 
