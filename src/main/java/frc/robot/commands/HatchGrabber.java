@@ -28,16 +28,9 @@ public class HatchGrabber extends Command {
   @Override
   protected void execute() {
     if (Controllers.checkButtonStatus(Robot.oi.hatchGrabber)) {
-      if(state) {
-        Robot.hatchPivot.pivotForward();
-      }
-      else {
-        Robot.hatchPivot.pivotBack();
-      }
-      state = !state;
-      checked = true;
+      Robot.hatchGrabber.grab();
     } else {
-      checked = false;
+      Robot.hatchGrabber.release();
     }
   }
 
