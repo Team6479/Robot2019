@@ -9,6 +9,7 @@ package frc.robot.util.control;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.Robot;
+import robot.controllers.XboxMap;
 
 /**
  * Class to handle all controller values and buttons
@@ -97,7 +98,7 @@ public class Controllers {
   public static double getXAxis() {
     if (controllerType == ControllerType.xbox) {
       //Return the x axis of the left analogue sitck
-      return Robot.oi.controller.getX(Hand.kLeft);
+      return Robot.oi.controller.getTriggerAxis(Hand.kRight) - Robot.oi.controller.getTriggerAxis(Hand.kLeft);
     } else if (controllerType == ControllerType.joystick) {
       if (axisIsLocked) {
         return -Math.round(Robot.oi.stick.getRawAxis(JoystickMap.joystickXAxis));
@@ -118,7 +119,7 @@ public class Controllers {
   public static double getZAxis() {
     if (controllerType == ControllerType.xbox) {
       //Return the combined values of both xbox triggers
-      return Robot.oi.controller.getTriggerAxis(Hand.kRight) - Robot.oi.controller.getTriggerAxis(Hand.kLeft);
+      return Robot.oi.controller.getRawAxis(XboxMap.RightJoystickX);
     } else if (controllerType == ControllerType.joystick) {
       //Return the z axis (rotation) of the joystick
       return Robot.oi.stick.getRawAxis(JoystickMap.joystickZAxis);
