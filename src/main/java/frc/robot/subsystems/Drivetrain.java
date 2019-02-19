@@ -193,11 +193,11 @@ public class Drivetrain extends Subsystem {
     else {
       reset = true;
     }
-    if(Math.abs(speedLR) > MECANUM_CORRECTION_START) {
+    /*if(Math.abs(speedLR) > MECANUM_CORRECTION_START) {
       rotation -= g / 18;
       SmartDashboard.putNumber("New Rotation", rotation);
       // Robot.gyro.reset();
-    }
+    }*/
 
     SmartDashboard.putNumber("Velocity: Left Front", getVelocity(Side.Left, Place.Front, Unit.Meters));
     SmartDashboard.putNumber("Velocity: Left Back", getVelocity(Side.Left, Place.Back, Unit.Meters));

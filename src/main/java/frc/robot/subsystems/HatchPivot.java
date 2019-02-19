@@ -8,36 +8,32 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class HatchGrabber extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  public DoubleSolenoid grabberSol;
-
-  public HatchGrabber() {
-    
-    grabberSol = new DoubleSolenoid(RobotMap.SOLENOID_HATCH_GRABBER_0, RobotMap.SOLENOID_HATCH_GRABBER_1);
-  }
-
-  public void grab() {
-    grabberSol.set(DoubleSolenoid.Value.kReverse);
-  }
+public class HatchPivot extends Subsystem {
   
-  public void release() {
-    grabberSol.set(DoubleSolenoid.Value.kForward);
+  DoubleSolenoid pivotSol;
+
+  public HatchPivot() {
+    pivotSol = new DoubleSolenoid(RobotMap.SOLENOID_HATCH_PIVOT_0, RobotMap.SOLENOID_HATCH_PIVOT_1);
+  }
+
+  public void pivotForward() {
+    pivotSol.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void pivotBack() {
+    pivotSol.set(DoubleSolenoid.Value.kReverse);
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new frc.robot.commands.HatchGrabber());
+    setDefaultCommand(new frc.robot.commands.HatchPivot());
   }
 }

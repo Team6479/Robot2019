@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.util;
+package frc.robot.util.control;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
@@ -15,9 +15,10 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public class XboxMap {
+public class ControllerMap {
   // Controllers
   public static final int controller = 0;
   public static final Hand leftHand = Hand.kLeft;
   public static final Hand rightHand = Hand.kRight;
+  public static final int joystick = 0;
 }

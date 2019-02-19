@@ -7,11 +7,15 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
 import frc.robot.drivers.Joystick;
-import frc.robot.util.JoystickMap;
 import frc.robot.drivers.XboxController;
-import frc.robot.util.XboxMap;
+import frc.robot.util.control.ControllerMap;
+import frc.robot.util.control.JoystickMap;
+import frc.robot.util.control.TogglableButton;
 import robot.controllers.ButtonTracker;
+import robot.controllers.XboxMap;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -48,15 +52,25 @@ public class OI {
   public Joystick stick;
   public ButtonTracker axisLock;
   public XboxController controller;
+  public ArrayList<TogglableButton> buttons = new ArrayList<TogglableButton>();
+  public final int hatchPivot = 0;
+  public final int hatchGrabber = 1;
+  public final int climbUp = 2;
+  public final int climbDown = 3;
 
   public void initalizeJoystick() {
     //Joyctick object
-    stick = new Joystick(JoystickMap.joystick);
+    stick = new Joystick(ControllerMap.joystick);
     axisLock = new ButtonTracker(stick, JoystickMap.joystickButton12);
   }
 
   public void initalizeXbox() {
     //Xbox controller object
-    controller = new XboxController(XboxMap.controller);
+    controller = new XboxController(ControllerMap.controller);
+    buttons.add(new TogglableButton(controller, XboxMap.AButton));
+    buttons.add(new TogglableButton(controller, XboxMap.YButton));
+    buttons.add(new TogglableButton(controller, XboxMap.RightBumper));
+    buttons.add(new TogglableButton(controller, XboxMap.LeftBumper));
+
   }
 }

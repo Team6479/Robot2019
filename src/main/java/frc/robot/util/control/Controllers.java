@@ -5,10 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.util;
+package frc.robot.util.control;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.Robot;
+import robot.controllers.XboxMap;
 
 /**
  * Class to handle all controller values and buttons
@@ -53,13 +54,20 @@ public class Controllers {
     }
   }
 
-  public static void checkAxisButton() {
-    if (controllerType == ControllerType.joystick && Robot.oi.axisLock.isPressed() && !axisButtonWasJustPressed) {
-      axisIsLocked = !axisIsLocked;
-      axisButtonWasJustPressed = true;
-    } else if (controllerType == ControllerType.joystick && !Robot.oi.axisLock.isPressed()) {
-      axisButtonWasJustPressed = false;
+  public static void updateButtons() {
+    for (int i = 0; i < Robot.oi.buttons.size(); i++) {
+      Robot.oi.buttons.get(i).updateButton();
     }
+    // if (controllerType == ControllerType.joystick && Robot.oi.axisLock.isPressed() && !axisButtonWasJustPressed) {
+    //   axisIsLocked = !axisIsLocked;
+    //   axisButtonWasJustPressed = true;
+    // } else if (controllerType == ControllerType.joystick && !Robot.oi.axisLock.isPressed()) {
+    //   axisButtonWasJustPressed = false;
+    // }
+  }
+
+  public static Boolean checkButtonStatus(int index) {
+    return Robot.oi.buttons.get(index).getButtonState();
   }
 
   /**
@@ -90,7 +98,7 @@ public class Controllers {
   public static double getXAxis() {
     if (controllerType == ControllerType.xbox) {
       //Return the x axis of the left analogue sitck
-      return Robot.oi.controller.getTriggerAxis(XboxMap.rightHand) - Robot.oi.controller.getTriggerAxis(XboxMap.leftHand);
+      return Robot.oi.controller.getTriggerAxis(Hand.kRight) - Robot.oi.controller.getTriggerAxis(Hand.kLeft);
     } else if (controllerType == ControllerType.joystick) {
       if (axisIsLocked) {
         return -Math.round(Robot.oi.stick.getRawAxis(JoystickMap.joystickXAxis));
@@ -111,7 +119,7 @@ public class Controllers {
   public static double getZAxis() {
     if (controllerType == ControllerType.xbox) {
       //Return the combined values of both xbox triggers
-      return Robot.oi.controller.getX(XboxMap.rightHand);
+      return Robot.oi.controller.getRawAxis(XboxMap.RightJoystickX);
     } else if (controllerType == ControllerType.joystick) {
       if (axisIsLocked) {
         //Stops z axis movement when locked
