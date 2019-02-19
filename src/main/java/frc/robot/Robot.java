@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
 
     Controllers.setControllerType(Controllers.ControllerType.xbox);
     controller = new SendableChooser<ControllerType>();
-    controller.addOption(ControllerType.joystick.getKey(), ControllerType.joystick);
+    controller.setDefaultOption(ControllerType.joystick.getKey(), ControllerType.joystick);
     controller.addOption(ControllerType.xbox.getKey(), ControllerType.xbox);
     SmartDashboard.putData(ControllerType.name, controller);
     oi = new OI();

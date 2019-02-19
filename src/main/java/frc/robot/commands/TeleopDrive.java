@@ -36,7 +36,8 @@ public class TeleopDrive extends Command {
     // Robot.drivetrain.arcadeDrive(Robot.oi.controller.getX(Hand.kLeft),
     // Robot.oi.controller.getY(Hand.kLeft));
     Controllers.updateButtons();
-    Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllers.getYAxis() * scale);
+    // Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllersj.getYAxis() * scale);
+    Robot.drivetrain.mecanumDrive(1, 0, 0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
