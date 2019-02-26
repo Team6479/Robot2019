@@ -25,6 +25,9 @@ public class ConstantVelocity extends Command {
    logger = new Logger("~/velocity.log");
    logger.log("", true);
   }
+  public ConstantVelocity() {
+    this(0.0, 0.0, 0.3);
+  }
 
   // Called just before this Command runs the first time
   @Override
