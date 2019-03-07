@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI.ButtonType;
 import frc.robot.Robot;
 import frc.robot.util.control.Controllers;
 
@@ -25,7 +26,7 @@ public class HatchPivot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Controllers.checkButtonStatus(Robot.oi.hatchPivot)) {
+    if (Controllers.checkButtonStatus(Robot.oi.hatchPivot, ButtonType.TOGGLABLE)) {
       Robot.hatchPivot.pivotForward();
     } else {
       Robot.hatchPivot.pivotBack();

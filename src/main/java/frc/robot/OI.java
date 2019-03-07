@@ -50,13 +50,26 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
   public Joystick stick;
+
   public ButtonTracker axisLock;
+
+  /* ------------------------------- */
+
   public XboxController controller;
-  public ArrayList<TogglableButton> buttons = new ArrayList<TogglableButton>();
+
+  public ArrayList<TogglableButton> togglableButtons = new ArrayList<TogglableButton>();
+  public ArrayList<ButtonTracker> buttons = new ArrayList<ButtonTracker>();
+
   public final int hatchPivot = 0;
   public final int hatchGrabber = 1;
-  public final int climbUp = 2;
-  public final int climbDown = 3;
+  public final int climbDown = 2;
+  public final int grabHab = 3;
+
+  public final int climbUp = 0;
+
+  public static enum ButtonType {
+    TOGGLABLE, HOLD;
+  }
 
   public void initalizeJoystick() {
     //Joyctick object
@@ -67,10 +80,10 @@ public class OI {
   public void initalizeXbox() {
     //Xbox controller object
     controller = new XboxController(ControllerMap.controller);
-    buttons.add(new TogglableButton(controller, XboxMap.AButton));
-    buttons.add(new TogglableButton(controller, XboxMap.YButton));
-    buttons.add(new TogglableButton(controller, XboxMap.RightBumper));
-    buttons.add(new TogglableButton(controller, XboxMap.LeftBumper));
-
+    togglableButtons.add(new TogglableButton(controller, XboxMap.AButton));
+    togglableButtons.add(new TogglableButton(controller, XboxMap.YButton));
+    togglableButtons.add(new TogglableButton(controller, XboxMap.LeftBumper));
+    togglableButtons.add(new TogglableButton(controller, XboxMap.BackButton));
+    buttons.add(new ButtonTracker(controller, XboxMap.RightBumper));
   }
 }

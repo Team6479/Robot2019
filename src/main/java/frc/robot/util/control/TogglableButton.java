@@ -13,14 +13,14 @@ import robot.controllers.ButtonTracker;
 /**
  * Uses ButtonTracker to toggle buttons on and off
  */
-public class TogglableButton {
+public class TogglableButton extends ButtonTracker {
     /**
      * Makes a button that can be toggled on and off
      * @param controller The controller
      * @param port The port for the button
      */
     public TogglableButton(GenericHID controller, int port) {
-        this.button = new ButtonTracker(controller, port);
+        super(controller, port);
         buttonState = false;
         buttonWasJustPressed = false;
     }
@@ -33,10 +33,10 @@ public class TogglableButton {
     }
 
     public void updateButton() {
-        if (button.isPressed() && !buttonWasJustPressed) {
+        if (isPressed() && !buttonWasJustPressed) {
             buttonState = !buttonState;
             buttonWasJustPressed = true;
-        } else if (!button.isPressed() && buttonWasJustPressed) {
+        } else if (!isPressed() && buttonWasJustPressed) {
             buttonWasJustPressed = false;
         }
     }
@@ -45,7 +45,6 @@ public class TogglableButton {
         buttonState = newState;
     }
 
-    private ButtonTracker button;
     private Boolean buttonState;
     private Boolean buttonWasJustPressed;
 }

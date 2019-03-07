@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.OI.ButtonType;
 import frc.robot.util.control.Controllers;
 
 public class HatchGrabber extends Command {
@@ -22,14 +23,14 @@ public class HatchGrabber extends Command {
   @Override
   protected void initialize() {
     if(Robot.hatchGrabber.grabberSol.get() == DoubleSolenoid.Value.kReverse) {
-      Robot.oi.buttons.get(Robot.oi.hatchGrabber).setButtonState(true);
+      Robot.oi.togglableButtons.get(Robot.oi.hatchGrabber).setButtonState(true);
     }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Controllers.checkButtonStatus(Robot.oi.hatchGrabber)) {
+    if (Controllers.checkButtonStatus(Robot.oi.hatchGrabber, ButtonType.TOGGLABLE)) {
       Robot.hatchGrabber.grab();
     } else {
       Robot.hatchGrabber.release();

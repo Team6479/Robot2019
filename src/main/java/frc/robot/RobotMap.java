@@ -38,4 +38,6 @@ public class RobotMap {
   public static final int SOLENOID_HATCH_PIVOT_1 = 0;
   public static final int SOLENOID_HATCH_GRABBER_0 = 3;
   public static final int SOLENOID_HATCH_GRABBER_1 = 2;
+  public static final int SOLENOID_CLIMBER_0 = 0; // These will be changed later
+  public static final int SOLENOID_CLIMBER_1 = 0; // These will be changed later
 }
