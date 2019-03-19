@@ -7,23 +7,23 @@
 
 package frc.robot.util.control;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import frc.robot.util.control.ButtonTracker;
 
 /**
- * Uses ButtonTracker to toggle buttons on and off
+ * Add your docs here.
  */
-public class TogglableButton extends ButtonTracker {
+public class DoubleButton {
     /**
      * Makes a button that can be toggled on and off
      * 
      * @param controller The controller
      * @param port       The port for the button
      */
-    public TogglableButton(GenericHID controller, int port) {
-        super(controller, port);
+    public DoubleButton(ButtonTracker buttonA, ButtonTracker buttonB) {
         buttonState = false;
         buttonWasJustPressed = false;
+        this.buttonA = buttonA;
+        this.buttonB = buttonB;
     }
 
     /**
@@ -37,10 +37,10 @@ public class TogglableButton extends ButtonTracker {
      * Evaluates the button as on or off
      */
     public void updateButton() {
-        if (isPressed() && !buttonWasJustPressed) {
+        if (buttonA.isPressed() && buttonB.isPressed() && !buttonWasJustPressed) {
             buttonState = !buttonState;
             buttonWasJustPressed = true;
-        } else if (!isPressed() && buttonWasJustPressed) {
+        } else if (!(buttonA.isPressed() || buttonB.isPressed()) && buttonWasJustPressed) {
             buttonWasJustPressed = false;
         }
     }
@@ -56,4 +56,5 @@ public class TogglableButton extends ButtonTracker {
 
     private Boolean buttonState;
     private Boolean buttonWasJustPressed;
+    private ButtonTracker buttonA, buttonB;
 }

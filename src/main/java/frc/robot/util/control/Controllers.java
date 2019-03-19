@@ -59,6 +59,9 @@ public class Controllers {
     for (int i = 0; i < Robot.oi.togglableButtons.size(); i++) {
       Robot.oi.togglableButtons.get(i).updateButton();
     }
+    for (int i = 0 ; i < Robot.oi.doubleButtons.size(); i++) {
+      Robot.oi.doubleButtons.get(i).updateButton();
+    }
   }
 
   public static Boolean checkButtonStatus(int index, ButtonType buttonType) {
@@ -66,6 +69,8 @@ public class Controllers {
       return Robot.oi.togglableButtons.get(index).getButtonState();
     } else if (buttonType == ButtonType.HOLD) {
       return Robot.oi.buttons.get(index).isPressed();
+    } else if (buttonType == ButtonType.DOUBLE) {
+      return Robot.oi.doubleButtons.get(index).getButtonState();
     } else {
       return false;
     }

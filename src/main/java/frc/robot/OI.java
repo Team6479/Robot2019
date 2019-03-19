@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import frc.robot.drivers.Joystick;
 import frc.robot.drivers.XboxController;
 import frc.robot.util.control.ControllerMap;
+import frc.robot.util.control.DoubleButton;
 import frc.robot.util.control.JoystickMap;
 import frc.robot.util.control.TogglableButton;
-import robot.controllers.ButtonTracker;
+import frc.robot.util.control.ButtonTracker;
 import robot.controllers.XboxMap;
 
 /**
@@ -49,6 +50,7 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+
   public Joystick stick;
 
   public ButtonTracker axisLock;
@@ -59,16 +61,18 @@ public class OI {
 
   public ArrayList<TogglableButton> togglableButtons = new ArrayList<TogglableButton>();
   public ArrayList<ButtonTracker> buttons = new ArrayList<ButtonTracker>();
+  public ArrayList<DoubleButton> doubleButtons = new ArrayList<DoubleButton>();
 
   public final int hatchPivot = 0;
   public final int hatchGrabber = 1;
-  public final int climbDown = 2;
-  public final int grabHab = 3;
+  public final int grabHab = 2;
 
   public final int climbUp = 0;
 
+  public final int climbRelease = 0;
+
   public static enum ButtonType {
-    TOGGLABLE, HOLD;
+    TOGGLABLE, HOLD, DOUBLE;
   }
 
   public void initalizeJoystick() {
@@ -80,10 +84,12 @@ public class OI {
   public void initalizeXbox() {
     //Xbox controller object
     controller = new XboxController(ControllerMap.controller);
-    togglableButtons.add(new TogglableButton(controller, XboxMap.AButton));
-    togglableButtons.add(new TogglableButton(controller, XboxMap.YButton));
-    togglableButtons.add(new TogglableButton(controller, XboxMap.LeftBumper));
-    togglableButtons.add(new TogglableButton(controller, XboxMap.BackButton));
-    buttons.add(new ButtonTracker(controller, XboxMap.RightBumper));
+    togglableButtons.add(new TogglableButton(controller, XboxMap.AButton)); // hatch pivot
+    togglableButtons.add(new TogglableButton(controller, XboxMap.YButton)); // hatch grabber
+    togglableButtons.add(new TogglableButton(controller, XboxMap.LeftBumper)); // grab hab
+    togglableButtons.get(grabHab).disable();
+    buttons.add(new ButtonTracker(controller, XboxMap.RightBumper)); // climb up
+    buttons.get(climbUp).disable();
+    doubleButtons.add(new DoubleButton(new ButtonTracker(controller, XboxMap.BackButton), new ButtonTracker(controller, XboxMap.StartButton))); // climb release
   }
 }
