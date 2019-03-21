@@ -7,6 +7,7 @@
 
 package frc.robot.util;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -28,6 +29,14 @@ public class Logger {
      */
     public Logger(String p) {
         path = Paths.get(p.replaceFirst("^~", System.getProperty("user.home")));
+        if (Files.exists(path)) {
+            try {
+                Files.delete(path);
+            }
+            catch(IOException e) {
+
+            }
+        }
     }
 
     /**

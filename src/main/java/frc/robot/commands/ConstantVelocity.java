@@ -7,6 +7,9 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain.Place;
@@ -16,33 +19,51 @@ import frc.robot.util.Logger;
 public class ConstantVelocity extends Command {
   private double speedLR, rotation, speedFB;
   private Logger logger;
+  private Timer timer;
 
   public ConstantVelocity(double lr, double rot, double fb) {
-   requires(Robot.drivetrain);
-   speedLR = lr;
-   rotation = rot;
-   speedFB = fb;
-   logger = new Logger("~/velocity.log");
-   logger.log("", true);
+    timer = new Timer();
+    requires(Robot.drivetrain);
+    speedLR = lr;
+    rotation = rot;
+    speedFB = fb;
+    logger = new Logger("~/velocity.log");
+    logger.log("", true);
   }
+
   public ConstantVelocity() {
-    this(0.0, 0.0, 0.3);
+    this(0.0, 0.0, 0.01);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    timer.start();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivetrain.mecanumDrive(speedLR, rotation, speedFB);
-    logger.log(
-      Robot.drivetrain.getVelocity(Side.Left, Place.Front) + "," +    // Left Master
-      Robot.drivetrain.getVelocity(Side.Left, Place.Back) + "," +     // Left Slave
-      Robot.drivetrain.getVelocity(Side.Right, Place.Front) + "," +   // Right Master
-      Robot.drivetrain.getVelocity(Side.Right, Place.Back) + "\n"     // Right Slave
+    // Robot.drivetrain.rawMecnumDrive(0.1, 0.1, rightMasterSpeed, rightSlaveSpeed);
+    int number = 1000;
+
+    // if(timer.get() < 2) {
+      Robot.drivetrain.leftMaster.set(ControlMode.Velocity, number);
+      Robot.drivetrain.leftSlave.set(ControlMode.Velocity, number);
+      Robot.drivetrain.rightMaster.set(ControlMode.Velocity, number);
+      Robot.drivetrain.rightSlave.set(ControlMode.Velocity, number);
+    // }
+    // else {
+    //   Robot.drivetrain.leftMaster.set(ControlMode.PercentOutput, 0);
+    //   Robot.drivetrain.leftSlave.set(ControlMode.PercentOutput, 0);
+    //   Robot.drivetrain.rightMaster.set(ControlMode.PercentOutput, 0);
+    //   Robot.drivetrain.rightSlave.set(ControlMode.PercentOutput, 0);
+    // }
+
+    logger.log(Robot.drivetrain.getVelocity(Side.Left, Place.Front) + "," + // Left Master
+        Robot.drivetrain.getVelocity(Side.Left, Place.Back) + "," + // Left Slave
+        Robot.drivetrain.getVelocity(Side.Right, Place.Front) + "," + // Right Master
+        Robot.drivetrain.getVelocity(Side.Right, Place.Back) + "\n" // Right Slave
     );
   }
 

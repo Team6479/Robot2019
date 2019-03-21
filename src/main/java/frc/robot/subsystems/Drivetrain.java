@@ -14,7 +14,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.talonsrxprofiles.DefaultTalonSRXProfile;
@@ -74,11 +73,11 @@ public class Drivetrain extends Subsystem {
 
   // Gains
   // Tune them to modify the behaviour of the PID loop
-  public final double kP = 0.25;
-	public final double kI = 0.001;
-	public final double kD = 20;
-	public final double kF = 1023.0/7200.0;
-	public final int kIzone = 300;
+  public final double kP = 1;
+	public final double kI = 0;
+	public final double kD = 0;
+	public final double kF = 0;
+	public final int kIzone = 0;
   public final double kPeakOutput = 1;
   public final int timeoutMs = 0;
   public final int pidID = 0;
@@ -90,6 +89,19 @@ public class Drivetrain extends Subsystem {
     leftSlave = new TalonSRX(RobotMap.LEFT_BACK);
     rightSlave = new TalonSRX(RobotMap.RIGHT_BACK);
 
+    // Restore each talonSRX to factory defaults prior to configuration
+    leftMaster.configFactoryDefault();
+    leftSlave.configFactoryDefault();
+    rightMaster.configFactoryDefault();
+    rightSlave.configFactoryDefault();
+
+    // Set the sensor phase so encoder readings match direction
+    leftMaster.setSensorPhase(true);
+    leftSlave.setSensorPhase(true);
+    rightMaster.setSensorPhase(true);
+    rightSlave.setSensorPhase(true);
+    
+
     // Set output direction
     leftMaster.setInverted(false);
     leftSlave.setInverted(false);
@@ -100,10 +112,27 @@ public class Drivetrain extends Subsystem {
 
     TalonSRXProfile.applyTalonSRXProfile(new DefaultTalonSRXProfile(), leftMaster, leftSlave, rightMaster, rightSlave);
 
-    configTalonPID(leftMaster);
-    configTalonPID(leftSlave);
-    configTalonPID(rightMaster);
-    configTalonPID(rightSlave);
+    /* Below Values worked with straight forward PID
+     * P = 0.61
+     * I = 0.004
+     * All others = 0
+     */
+
+    leftMaster.configClosedloopRamp(0.1);
+    leftSlave.configClosedloopRamp(0.1);
+    rightMaster.configClosedloopRamp(0.1);
+    rightSlave.configClosedloopRamp(0.1);
+
+    // .00065
+    configTalonPID(leftMaster, 1.25, .0009, 0, 0);
+    configTalonPID(leftSlave, 2.55, .0009, 0, 0);
+    configTalonPID(rightMaster, 2.4, .0007, 0, 0);
+    configTalonPID(rightSlave, 1.85, .0008, 0, 0);
+
+    // configTalonPID(leftMaster, .7, .0025, 0, 0);
+    // configTalonPID(leftSlave, .7, .005, 0, 0);
+    // configTalonPID(rightMaster, .7, .004, 0, 0);
+    // configTalonPID(rightSlave, .7, .004, 0, 0);
 
     resetEncoders();
   }
@@ -111,14 +140,11 @@ public class Drivetrain extends Subsystem {
   /**
    * Configures the PID loop according to the constants found in this class
    * @param talon The TalonSRX to configure
-   * @author Leo Wilson
+   * @author Leo Wilson, Thomas Quillan
    */
-  private void configTalonPID(TalonSRX talon) {
+  private void configTalonPID(TalonSRX talon, double p, double i, double d, double f) {
     // Add Mag Encoders
-    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
-    leftSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
-    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
-    rightSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
+    talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
 
     // Configure the peak and nominal outputs of the motors
     talon.configNominalOutputForward(0, timeoutMs);
@@ -127,10 +153,10 @@ public class Drivetrain extends Subsystem {
     talon.configPeakOutputReverse(-1, timeoutMs);
 
     // Configure the gains
-    talon.config_kF(pidID, kF, timeoutMs);
-		talon.config_kP(pidID, kP, timeoutMs);
-		talon.config_kI(pidID, kI, timeoutMs);
-    talon.config_kD(pidID, kD, timeoutMs);
+		talon.config_kP(pidID, p, timeoutMs);
+		talon.config_kI(pidID, i, timeoutMs);
+    talon.config_kD(pidID, d, timeoutMs);
+    talon.config_kF(pidID, f, timeoutMs);
   }
 
   public double percentToUnits(double percent, double interval, double rpm, double cpr) {
@@ -139,6 +165,7 @@ public class Drivetrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
+    // setDefaultCommand(new ConstantVelocity());
     setDefaultCommand(new TeleopDrive());
   }
 
@@ -185,14 +212,14 @@ public class Drivetrain extends Subsystem {
    * @author Leo Wilson
    */
   public void mecanumDrive(double speedLR, double rotation, double speedFB) {
-    double g = Robot.gyro.getAngle();
-    SmartDashboard.putNumber("gyro", g);
-    if(reset) {
-      Robot.gyro.reset();
-    }
-    else {
-      reset = true;
-    }
+    // double g = Robot.gyro.getAngle();
+    // SmartDashboard.putNumber("gyro", g);
+    // if(reset) {
+    //   Robot.gyro.reset();
+    // }
+    // else {
+    //   reset = true;
+    // }
     /*if(Math.abs(speedLR) > MECANUM_CORRECTION_START) {
       rotation -= g / 18;
       SmartDashboard.putNumber("New Rotation", rotation);
