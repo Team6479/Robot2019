@@ -16,6 +16,7 @@ import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.HatchPivot;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.TCP;
 import frc.robot.util.control.Controllers;
 import frc.robot.util.control.Controllers.ControllerType;
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
   public static TCP tcp;
   public static Gyro gyro;
   public static Pneumatics pneumatics;
+  public static Climber climber;
   public static HatchPivot hatchPivot;
   public static HatchGrabber hatchGrabber;
   private SendableChooser<ControllerType> controller;
@@ -54,6 +56,8 @@ public class Robot extends TimedRobot {
     pneumatics = new Pneumatics();
     hatchPivot = new HatchPivot();
     hatchGrabber = new HatchGrabber();
+
+    climber = new Climber();
 
     hatchPivot.pivotForward();
     hatchGrabber.grab();

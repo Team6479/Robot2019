@@ -15,25 +15,25 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Climber extends Subsystem {
-  public DoubleSolenoid grabberSol;
+  public DoubleSolenoid climberSol;
 
   public Climber() {
-    
-    grabberSol = new DoubleSolenoid(RobotMap.SOLENOID_CLIMBER_0, RobotMap.SOLENOID_CLIMBER_1);
+    climberSol = new DoubleSolenoid(RobotMap.SOLENOID_CLIMBER_0, RobotMap.SOLENOID_CLIMBER_1);
   }
 
-  public void grab() {
-    grabberSol.set(DoubleSolenoid.Value.kReverse);
-  }
-
-  public void release() {
-    grabberSol.set(DoubleSolenoid.Value.kForward);
+  public void set(boolean state) { // true = extended, false = retracted
+    if(state) {
+      climberSol.set(DoubleSolenoid.Value.kForward);
+    }
+    else {
+      climberSol.set(DoubleSolenoid.Value.kReverse);
+    }
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new frc.robot.commands.HatchGrabber());
+    setDefaultCommand(new frc.robot.commands.Climber());
   }
 }
