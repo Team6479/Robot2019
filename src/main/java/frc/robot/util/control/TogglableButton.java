@@ -32,6 +32,9 @@ public class TogglableButton {
         return buttonState;
     }
 
+    /**
+     * Checks for button presses and toggles if necessary
+     */
     public void updateButton() {
         if (button.isPressed() && !buttonWasJustPressed) {
             buttonState = !buttonState;
