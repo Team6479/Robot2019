@@ -23,14 +23,14 @@ public class HatchGrabber extends Command {
   @Override
   protected void initialize() {
     if(Robot.hatchGrabber.grabberSol.get() == DoubleSolenoid.Value.kReverse) {
-      Robot.oi.togglableButtons.get(Robot.oi.hatchGrabber).setButtonState(true);
+      Robot.oi.togglableButtons.get(Robot.oi.commandIndex.get("hatchGrabber")).setButtonState(true);
     }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Controllers.checkButtonStatus(Robot.oi.hatchGrabber, ButtonType.TOGGLABLE)) {
+    if (Controllers.checkButtonStatus(Robot.oi.commandIndex.get("hatchGrabber"), ButtonType.TOGGLABLE)) {
       Robot.hatchGrabber.grab();
     } else {
       Robot.hatchGrabber.release();

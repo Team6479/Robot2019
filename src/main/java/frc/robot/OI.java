@@ -8,14 +8,15 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import frc.robot.drivers.Joystick;
 import frc.robot.drivers.XboxController;
+import frc.robot.util.control.ButtonTracker;
 import frc.robot.util.control.ControllerMap;
 import frc.robot.util.control.DoubleButton;
 import frc.robot.util.control.JoystickMap;
 import frc.robot.util.control.TogglableButton;
-import frc.robot.util.control.ButtonTracker;
 import robot.controllers.XboxMap;
 
 /**
@@ -62,14 +63,7 @@ public class OI {
   public ArrayList<TogglableButton> togglableButtons = new ArrayList<TogglableButton>();
   public ArrayList<ButtonTracker> buttons = new ArrayList<ButtonTracker>();
   public ArrayList<DoubleButton> doubleButtons = new ArrayList<DoubleButton>();
-
-  public final int hatchPivot = 0;
-  public final int hatchGrabber = 1;
-  public final int grabHab = 2;
-
-  public final int climbUp = 0;
-
-  public final int climbRelease = 0;
+  public HashMap<String, Integer> commandIndex = new HashMap<String, Integer>();
 
   public static enum ButtonType {
     TOGGLABLE, HOLD, DOUBLE;
@@ -84,12 +78,23 @@ public class OI {
   public void initalizeXbox() {
     //Xbox controller object
     controller = new XboxController(ControllerMap.controller);
-    togglableButtons.add(new TogglableButton(controller, XboxMap.AButton)); // hatch pivot
-    togglableButtons.add(new TogglableButton(controller, XboxMap.YButton)); // hatch grabber
+
+    commandIndex.put("hatchPivot", 0);
+    commandIndex.put("hatchGrabber", 1);
+    commandIndex.put("grabHab", 2);
+    commandIndex.put("climbUp", 0);
+    commandIndex.put("climbRelease", 0);
+
+    togglableButtons.add(new TogglableButton(controller, XboxMap.YButton)); // hatch pivot
+    togglableButtons.add(new TogglableButton(controller, XboxMap.AButton)); // hatch grabber
     togglableButtons.add(new TogglableButton(controller, XboxMap.LeftBumper)); // grab hab
-    togglableButtons.get(grabHab).disable();
+
+    togglableButtons.get(commandIndex.get("hatchPivot")).disable();
+
     buttons.add(new ButtonTracker(controller, XboxMap.RightBumper)); // climb up
-    buttons.get(climbUp).disable();
+
+    buttons.get(commandIndex.get("climbUp")).disable();
+
     doubleButtons.add(new DoubleButton(new ButtonTracker(controller, XboxMap.BackButton), new ButtonTracker(controller, XboxMap.StartButton))); // climb release
   }
 }

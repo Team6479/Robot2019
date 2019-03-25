@@ -10,8 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class Climber extends Command {
-  public Climber() {
+public class ClimberRelease extends Command {
+  public ClimberRelease() {
     requires(Robot.climber);
   }
 
@@ -23,7 +23,7 @@ public class Climber extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.climber.set(Robot.oi.doubleButtons.get(Robot.oi.climbRelease).getButtonState());
+    Robot.climber.set(Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonState());
   }
 
   // Make this return true when this Command no longer needs to run execute()

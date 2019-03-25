@@ -26,7 +26,7 @@ public class HatchPivot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Controllers.checkButtonStatus(Robot.oi.hatchPivot, ButtonType.TOGGLABLE)) {
+    if (Controllers.checkButtonStatus(Robot.oi.commandIndex.get("hatchPivot"), ButtonType.TOGGLABLE)) {
       Robot.hatchPivot.pivotForward();
     } else {
       Robot.hatchPivot.pivotBack();
