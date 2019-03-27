@@ -7,34 +7,27 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI.ButtonType;
 import frc.robot.Robot;
 import frc.robot.util.control.Controllers;
-import frc.robot.util.control.DoubleButton;
 
-public class HatchGrabber extends Command {
-  public HatchGrabber() {
-    requires(Robot.hatchGrabber);
+public class Climber extends Command {
+  public Climber() {
+    requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if(Robot.hatchGrabber.grabberSol.get() == DoubleSolenoid.Value.kReverse) {
-      Robot.oi.togglableButtons.get(Robot.oi.commandIndex.get("hatchGrabber")).setButtonState(true);
-    }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Controllers.checkButtonStatus(Robot.oi.commandIndex.get("hatchGrabber"), ButtonType.TOGGLABLE)) {
-      Robot.hatchGrabber.grab();
-    } else {
-      Robot.hatchGrabber.release();
-    }
+    Robot.climber.setRelease(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbRelease"), ButtonType.DOUBLE));
+    Robot.climber.setGrab(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("grabHab"), ButtonType.TOGGLABLE));
+    Robot.climber.setClimberSpark(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbUp"), ButtonType.HOLD));
   }
 
   // Make this return true when this Command no longer needs to run execute()

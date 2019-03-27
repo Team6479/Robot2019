@@ -45,6 +45,21 @@ public class ButtonTracker extends JoystickButton {
         super(joystick, buttonNumber);
         allButtons.add(this);
         this.enabled = true;
+        this.joystick = joystick;
+        this.buttonNumber = buttonNumber;
+    }
+    /**
+     * @return GenericHID joystick
+     */
+    public GenericHID getJoystick() {
+        return joystick;
+    }
+
+    /**
+     * @return buttonNumber
+     */
+    public int getButtonNumber() {
+        return buttonNumber;
     }
 
     /**
@@ -122,4 +137,6 @@ public class ButtonTracker extends JoystickButton {
     }
 
     private boolean enabled;
+    private GenericHID joystick;
+    private int buttonNumber;
 }

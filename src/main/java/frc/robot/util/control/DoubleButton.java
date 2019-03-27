@@ -54,6 +54,20 @@ public class DoubleButton {
         buttonState = newState;
     }
 
+    /**
+     * @return buttonA
+     */
+    public ButtonTracker getButtonA() {
+        return buttonA;
+    }
+
+    /**
+     * @return buttonB
+     */
+    public ButtonTracker getButtonB() {
+        return buttonB;
+    }
+
     private Boolean buttonState;
     private Boolean buttonWasJustPressed;
     private ButtonTracker buttonA, buttonB;

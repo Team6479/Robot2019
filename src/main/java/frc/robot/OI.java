@@ -79,6 +79,7 @@ public class OI {
     //Xbox controller object
     controller = new XboxController(ControllerMap.controller);
 
+    // Add indexes for buttons
     commandIndex.put("hatchPivot", 0);
     commandIndex.put("hatchGrabber", 1);
     commandIndex.put("grabHab", 2);
@@ -89,11 +90,7 @@ public class OI {
     togglableButtons.add(new TogglableButton(controller, XboxMap.AButton)); // hatch grabber
     togglableButtons.add(new TogglableButton(controller, XboxMap.LeftBumper)); // grab hab
 
-    togglableButtons.get(commandIndex.get("hatchPivot")).disable();
-
     buttons.add(new ButtonTracker(controller, XboxMap.RightBumper)); // climb up
-
-    buttons.get(commandIndex.get("climbUp")).disable();
 
     doubleButtons.add(new DoubleButton(new ButtonTracker(controller, XboxMap.BackButton), new ButtonTracker(controller, XboxMap.StartButton))); // climb release
   }

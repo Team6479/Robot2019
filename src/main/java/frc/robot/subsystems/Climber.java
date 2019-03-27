@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -15,18 +16,40 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Climber extends Subsystem {
-  public DoubleSolenoid climberSol;
+  public DoubleSolenoid climberSolRelease;
+  public DoubleSolenoid climberSolGrab;
+  public Spark climber;
 
   public Climber() {
-    climberSol = new DoubleSolenoid(RobotMap.SOLENOID_CLIMBER_0, RobotMap.SOLENOID_CLIMBER_1);
+    climberSolRelease = new DoubleSolenoid(RobotMap.SOLENOID_CLIMBER_0, RobotMap.SOLENOID_CLIMBER_1);
+    climberSolGrab = new DoubleSolenoid(RobotMap.SOLENOID_PUSHER_0, RobotMap.SOLENOID_PUSHER_1);
+    climber = new Spark(RobotMap.CLIMBER_SPARK);
   }
 
-  public void set(boolean state) { // true = extended, false = retracted
+  public void setRelease(boolean state) { // true = extended, false = retracted
     if(state) {
-      climberSol.set(DoubleSolenoid.Value.kForward);
+      climberSolRelease.set(DoubleSolenoid.Value.kForward);
+      System.out.println("Release On");
     }
     else {
-      climberSol.set(DoubleSolenoid.Value.kReverse);
+      climberSolRelease.set(DoubleSolenoid.Value.kReverse);
+      System.out.println("Release Off");
+    }
+  }
+
+  public void setGrab(boolean state) { // true = extended, false = retracted
+    if (state) {
+      climberSolGrab.set(DoubleSolenoid.Value.kForward);
+    } else {
+      climberSolGrab.set(DoubleSolenoid.Value.kReverse);
+    }
+  }
+
+  public void setClimberSpark(boolean state) { // true = on, false = off
+    if (state) {
+      climber.set(1);
+    } else {
+      climber.set(0);
     }
   }
 
@@ -34,6 +57,6 @@ public class Climber extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new frc.robot.commands.ClimberRelease());
+    setDefaultCommand(new frc.robot.commands.Climber());
   }
 }

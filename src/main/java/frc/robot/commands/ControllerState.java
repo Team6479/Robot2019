@@ -8,11 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI.ButtonType;
 import frc.robot.Robot;
+import frc.robot.util.control.Controllers;
 
-public class ClimberRelease extends Command {
-  public ClimberRelease() {
-    requires(Robot.climber);
+public class ControllerState extends Command {
+  boolean climbMode;
+  public ControllerState() {
+    this.climbMode = false;
   }
 
   // Called just before this Command runs the first time
@@ -23,7 +26,16 @@ public class ClimberRelease extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.climber.set(Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonState());
+    climbMode = Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbRelease"), ButtonType.DOUBLE);
+    if (!climbMode) {
+      Robot.oi.buttons.get(Robot.oi.commandIndex.get("climbUp")).disable();
+      Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonA().disable();
+      Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonB().disable();
+    } else {
+      Robot.oi.buttons.get(Robot.oi.commandIndex.get("climbUp")).enable();
+      Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonA().enable();
+      Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonB().enable();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
