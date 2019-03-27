@@ -17,6 +17,7 @@ import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.HatchPivot;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.TCP;
+import frc.robot.subsystems.JetsonSSH;
 import frc.robot.util.control.Controllers;
 import frc.robot.util.control.Controllers.ControllerType;
 
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
   public static HatchPivot hatchPivot;
   public static HatchGrabber hatchGrabber;
   private SendableChooser<ControllerType> controller;
+  public static JetsonSSH jetsonSSH;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -57,6 +59,8 @@ public class Robot extends TimedRobot {
 
     hatchPivot.pivotForward();
     hatchGrabber.grab();
+
+    jetsonSSH = new JetsonSSH();
 
     Controllers.setControllerType(Controllers.ControllerType.xbox);
     controller = new SendableChooser<ControllerType>();

@@ -13,6 +13,7 @@ import com.jcraft.jsch.Session;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.commands.StartJetsonCode;
 
 /**
  * Add your docs here.
@@ -73,6 +74,6 @@ public class JetsonSSH extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new StartJetsonCode());
   }
 }
