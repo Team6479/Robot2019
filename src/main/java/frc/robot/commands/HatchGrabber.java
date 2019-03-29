@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI.ButtonType;
 import frc.robot.Robot;
 import frc.robot.util.control.Controllers;
-import frc.robot.util.control.DoubleButton;
 
 public class HatchGrabber extends Command {
   public HatchGrabber() {

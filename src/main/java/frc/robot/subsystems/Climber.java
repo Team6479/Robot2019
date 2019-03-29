@@ -21,19 +21,17 @@ public class Climber extends Subsystem {
   public Spark climber;
 
   public Climber() {
-    climberSolRelease = new DoubleSolenoid(RobotMap.SOLENOID_CLIMBER_0, RobotMap.SOLENOID_CLIMBER_1);
-    climberSolGrab = new DoubleSolenoid(RobotMap.SOLENOID_PUSHER_0, RobotMap.SOLENOID_PUSHER_1);
+    climberSolRelease = new DoubleSolenoid(RobotMap.SOLENOID_PUSHER_0, RobotMap.SOLENOID_PUSHER_1);
+    climberSolGrab = new DoubleSolenoid(RobotMap.SOLENOID_CLIMBER_0, RobotMap.SOLENOID_CLIMBER_1);
     climber = new Spark(RobotMap.CLIMBER_SPARK);
   }
 
   public void setRelease(boolean state) { // true = extended, false = retracted
     if(state) {
       climberSolRelease.set(DoubleSolenoid.Value.kForward);
-      System.out.println("Release On");
     }
     else {
       climberSolRelease.set(DoubleSolenoid.Value.kReverse);
-      System.out.println("Release Off");
     }
   }
 
@@ -45,12 +43,16 @@ public class Climber extends Subsystem {
     }
   }
 
-  public void setClimberSpark(boolean state) { // true = on, false = off
-    if (state) {
-      climber.set(1);
+  public void setClimberSpark(boolean state1, boolean state2) { // true = on, false = off
+    if (state1 ^ state2) {
+      if (state1) {
+        climber.set(-1);
+      } else if (state2) {
+        climber.set(0.5);
+      }
     } else {
       climber.set(0);
-    }
+    } 
   }
 
   @Override

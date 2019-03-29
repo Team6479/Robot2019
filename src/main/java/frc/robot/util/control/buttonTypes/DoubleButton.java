@@ -5,12 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.util.control;
-
-import frc.robot.util.control.ButtonTracker;
+package frc.robot.util.control.buttonTypes;
 
 /**
- * Add your docs here.
+ * Uses ButtonTrackers to make a double button that is only active when both
+ * buttons are active
  */
 public class DoubleButton {
     /**

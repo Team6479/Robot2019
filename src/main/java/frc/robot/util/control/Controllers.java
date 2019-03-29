@@ -67,8 +67,8 @@ public class Controllers {
   public static Boolean checkButtonStatus(int index, ButtonType buttonType) {
     if (buttonType == ButtonType.TOGGLABLE) {
       return Robot.oi.togglableButtons.get(index).getButtonState();
-    } else if (buttonType == ButtonType.HOLD) {
-      return Robot.oi.buttons.get(index).isPressed();
+    } else if (buttonType == ButtonType.POV) {
+      return Robot.oi.povButtons.get(index).getButtonState();
     } else if (buttonType == ButtonType.DOUBLE) {
       return Robot.oi.doubleButtons.get(index).getButtonState();
     } else {

@@ -28,11 +28,9 @@ public class ControllerState extends Command {
   protected void execute() {
     climbMode = Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbRelease"), ButtonType.DOUBLE);
     if (!climbMode) {
-      Robot.oi.buttons.get(Robot.oi.commandIndex.get("climbUp")).disable();
       Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonA().disable();
       Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonB().disable();
     } else {
-      Robot.oi.buttons.get(Robot.oi.commandIndex.get("climbUp")).enable();
       Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonA().enable();
       Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonB().enable();
     }

@@ -16,6 +16,7 @@ import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.HatchPivot;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.commands.PusherReset;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.TCP;
 import frc.robot.util.control.Controllers;
@@ -64,10 +65,11 @@ public class Robot extends TimedRobot {
 
     Controllers.setControllerType(Controllers.ControllerType.xbox);
     controller = new SendableChooser<ControllerType>();
-    controller.setDefaultOption(ControllerType.joystick.getKey(), ControllerType.joystick);
-    controller.addOption(ControllerType.xbox.getKey(), ControllerType.xbox);
+    controller.setDefaultOption(ControllerType.xbox.getKey(), ControllerType.xbox);
+    controller.addOption(ControllerType.joystick.getKey(), ControllerType.joystick);
     SmartDashboard.putData(ControllerType.name, controller);
-    oi = new OI();
+
+
   }
 
   /**
@@ -122,6 +124,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     Controllers.setControllerType(controller.getSelected());
+    new PusherReset().start();
   }
 
   /**

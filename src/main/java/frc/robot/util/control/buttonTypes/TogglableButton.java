@@ -5,10 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.util.control;
+package frc.robot.util.control.buttonTypes;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import frc.robot.util.control.ButtonTracker;
 
 /**
  * Uses ButtonTracker to toggle buttons on and off

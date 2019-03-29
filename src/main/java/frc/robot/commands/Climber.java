@@ -27,7 +27,8 @@ public class Climber extends Command {
   protected void execute() {
     Robot.climber.setRelease(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbRelease"), ButtonType.DOUBLE));
     Robot.climber.setGrab(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("grabHab"), ButtonType.TOGGLABLE));
-    Robot.climber.setClimberSpark(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbUp"), ButtonType.HOLD));
+    Robot.climber.setClimberSpark(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbUp"), ButtonType.POV), 
+        Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbDown"), ButtonType.POV));
   }
 
   // Make this return true when this Command no longer needs to run execute()

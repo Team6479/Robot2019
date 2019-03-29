@@ -1,4 +1,4 @@
-package frc.robot.util.control;
+package frc.robot.util.control.buttonTypes;
 
 import java.util.ArrayList;
 
