@@ -14,7 +14,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.talonsrxprofiles.DefaultTalonSRXProfile;
@@ -40,6 +39,12 @@ public class Drivetrain extends Subsystem {
   private final double WHEEL_DIAMETER = 0.1524;
   // Cycles per rotation of the encoder
   private final double CPR = 4096;
+  // The theoretical max RPM of the wheel
+  // Raw RPM of the motor * by gear ratio of gearbox
+  public final double RPM = 5840 / 10.71;
+
+  // The number of PID intervals / minute
+  public final double INTERVAL = 600;
 
   // the magnitude at which mecanum correction kicks in
   private final double MECANUM_CORRECTION_START = 0.1;
@@ -56,12 +61,46 @@ public class Drivetrain extends Subsystem {
   // Right Back Motor (Slave)
   public TalonSRX rightSlave;
 
+  // which PID slot to use
+  public static final int kSlotIdx = 0;
+  // which PID loop to use
+  public static final int kPIDLoopIdx = 0;
+  /**
+	 * Set to zero to skip waiting for confirmation, set to nonzero to wait and
+	 * report to DS if action fails.
+	 */
+  public static final int kTimeoutMs = 0;
+
+  // Gains
+  // Tune them to modify the behaviour of the PID loop
+  public final double kP = 1;
+	public final double kI = 0;
+	public final double kD = 0;
+	public final double kF = 0;
+	public final int kIzone = 0;
+  public final double kPeakOutput = 1;
+  public final int timeoutMs = 0;
+  public final int pidID = 0;
+
   public Drivetrain() {
     // Init Motors
     leftMaster = new TalonSRX(RobotMap.LEFT_FRONT);
     rightMaster = new TalonSRX(RobotMap.RIGHT_FRONT);
     leftSlave = new TalonSRX(RobotMap.LEFT_BACK);
     rightSlave = new TalonSRX(RobotMap.RIGHT_BACK);
+
+    // Restore each talonSRX to factory defaults prior to configuration
+    leftMaster.configFactoryDefault();
+    leftSlave.configFactoryDefault();
+    rightMaster.configFactoryDefault();
+    rightSlave.configFactoryDefault();
+
+    // Set the sensor phase so encoder readings match direction
+    leftMaster.setSensorPhase(true);
+    leftSlave.setSensorPhase(true);
+    rightMaster.setSensorPhase(true);
+    rightSlave.setSensorPhase(true);
+    
 
     // Set output direction
     leftMaster.setInverted(false);
@@ -73,17 +112,54 @@ public class Drivetrain extends Subsystem {
 
     TalonSRXProfile.applyTalonSRXProfile(new DefaultTalonSRXProfile(), leftMaster, leftSlave, rightMaster, rightSlave);
 
-    // Add Mag Encoders
-    int timeoutMs = 0;
-    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
-    leftSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
-    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
-    rightSlave.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, timeoutMs);
+    /* Below Values worked with straight forward PID
+     * P = 0.61
+     * I = 0.004
+     * All others = 0
+     */
+
+    leftMaster.configClosedloopRamp(0.1);
+    leftSlave.configClosedloopRamp(0.1);
+    rightMaster.configClosedloopRamp(0.1);
+    rightSlave.configClosedloopRamp(0.1);
+
+    configTalonPID(leftMaster, .925, .0005, 0, 0);
+    configTalonPID(leftSlave, .9, .0006, 0, 0);
+    configTalonPID(rightMaster, .9, .0006, 0, 0);
+    configTalonPID(rightSlave, .925, .0005, 0, 0);
+
     resetEncoders();
+  }
+
+  /**
+   * Configures the PID loop according to the constants found in this class
+   * @param talon The TalonSRX to configure
+   * @author Leo Wilson, Thomas Quillan
+   */
+  private void configTalonPID(TalonSRX talon, double p, double i, double d, double f) {
+    // Add Mag Encoders
+    talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
+
+    // Configure the peak and nominal outputs of the motors
+    talon.configNominalOutputForward(0, timeoutMs);
+		talon.configNominalOutputReverse(0, timeoutMs);
+		talon.configPeakOutputForward(1, timeoutMs);
+    talon.configPeakOutputReverse(-1, timeoutMs);
+
+    // Configure the gains
+		talon.config_kP(pidID, p, timeoutMs);
+		talon.config_kI(pidID, i, timeoutMs);
+    talon.config_kD(pidID, d, timeoutMs);
+    talon.config_kF(pidID, f, timeoutMs);
+  }
+
+  public double percentToUnits(double percent, double interval, double rpm, double cpr) {
+    return (percent * rpm * cpr) / interval;
   }
 
   @Override
   public void initDefaultCommand() {
+    // setDefaultCommand(new ConstantVelocity());
     setDefaultCommand(new TeleopDrive());
   }
 
@@ -116,10 +192,10 @@ public class Drivetrain extends Subsystem {
    * @param rightSlaveSpeed What it looks like
    */
   public void rawMecnumDrive(double leftMasterSpeed, double leftSlaveSpeed, double rightMasterSpeed, double rightSlaveSpeed) {
-    leftMaster.set(ControlMode.PercentOutput, leftMasterSpeed);
-    leftSlave.set(ControlMode.PercentOutput, leftSlaveSpeed);
-    rightMaster.set(ControlMode.PercentOutput, rightMasterSpeed);
-    rightSlave.set(ControlMode.PercentOutput, rightSlaveSpeed);
+    leftMaster.set(ControlMode.Velocity, percentToUnits(leftMasterSpeed, INTERVAL, RPM, CPR));
+    leftSlave.set(ControlMode.Velocity, percentToUnits(leftSlaveSpeed, INTERVAL, RPM, CPR));
+    rightMaster.set(ControlMode.Velocity, percentToUnits(rightMasterSpeed, INTERVAL, RPM, CPR));
+    rightSlave.set(ControlMode.Velocity, percentToUnits(rightSlaveSpeed, INTERVAL, RPM, CPR));
   }
 
   /**
@@ -130,14 +206,14 @@ public class Drivetrain extends Subsystem {
    * @author Leo Wilson
    */
   public void mecanumDrive(double speedLR, double rotation, double speedFB) {
-    double g = Robot.gyro.getAngle();
-    SmartDashboard.putNumber("gyro", g);
-    if(reset) {
-      Robot.gyro.reset();
-    }
-    else {
-      reset = true;
-    }
+    // double g = Robot.gyro.getAngle();
+    // SmartDashboard.putNumber("gyro", g);
+    // if(reset) {
+    //   Robot.gyro.reset();
+    // }
+    // else {
+    //   reset = true;
+    // }
     /*if(Math.abs(speedLR) > MECANUM_CORRECTION_START) {
       rotation -= g / 18;
       SmartDashboard.putNumber("New Rotation", rotation);
