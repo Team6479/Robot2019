@@ -10,6 +10,7 @@ package frc.robot.util.control;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.Robot;
 import robot.controllers.XboxMap;
+import frc.robot.OI.ButtonType;
 
 /**
  * Class to handle all controller values and buttons
@@ -55,19 +56,24 @@ public class Controllers {
   }
 
   public static void updateButtons() {
-    for (int i = 0; i < Robot.oi.buttons.size(); i++) {
-      Robot.oi.buttons.get(i).updateButton();
+    for (int i = 0; i < Robot.oi.togglableButtons.size(); i++) {
+      Robot.oi.togglableButtons.get(i).updateButton();
     }
-    // if (controllerType == ControllerType.joystick && Robot.oi.axisLock.isPressed() && !axisButtonWasJustPressed) {
-    //   axisIsLocked = !axisIsLocked;
-    //   axisButtonWasJustPressed = true;
-    // } else if (controllerType == ControllerType.joystick && !Robot.oi.axisLock.isPressed()) {
-    //   axisButtonWasJustPressed = false;
-    // }
+    for (int i = 0 ; i < Robot.oi.doubleButtons.size(); i++) {
+      Robot.oi.doubleButtons.get(i).updateButton();
+    }
   }
 
-  public static Boolean checkButtonStatus(int index) {
-    return Robot.oi.buttons.get(index).getButtonState();
+  public static Boolean checkButtonStatus(int index, ButtonType buttonType) {
+    if (buttonType == ButtonType.TOGGLABLE) {
+      return Robot.oi.togglableButtons.get(index).getButtonState();
+    } else if (buttonType == ButtonType.POV) {
+      return Robot.oi.povButtons.get(index).getButtonState();
+    } else if (buttonType == ButtonType.DOUBLE) {
+      return Robot.oi.doubleButtons.get(index).getButtonState();
+    } else {
+      return false;
+    }
   }
 
   /**

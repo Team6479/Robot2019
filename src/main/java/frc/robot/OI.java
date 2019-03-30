@@ -8,13 +8,16 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import frc.robot.util.control.buttonTypes.POVButton;
 import frc.robot.drivers.Joystick;
 import frc.robot.drivers.XboxController;
 import frc.robot.util.control.ControllerMap;
 import frc.robot.util.control.JoystickMap;
-import frc.robot.util.control.TogglableButton;
-import robot.controllers.ButtonTracker;
+import frc.robot.util.control.buttonTypes.DoubleButton;
+import frc.robot.util.control.buttonTypes.TogglableButton;
+import frc.robot.util.control.buttonTypes.ButtonTracker;
 import robot.controllers.XboxMap;
 
 /**
@@ -49,14 +52,23 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+
   public Joystick stick;
+
   public ButtonTracker axisLock;
+
+  /* ------------------------------- */
+
   public XboxController controller;
-  public ArrayList<TogglableButton> buttons = new ArrayList<TogglableButton>();
-  public final int hatchPivot = 0;
-  public final int hatchGrabber = 1;
-  public final int climbUp = 2;
-  public final int climbDown = 3;
+
+  public ArrayList<TogglableButton> togglableButtons = new ArrayList<TogglableButton>();
+  public ArrayList<DoubleButton> doubleButtons = new ArrayList<DoubleButton>();
+  public ArrayList<POVButton> povButtons = new ArrayList<POVButton>();
+  public HashMap<String, Integer> commandIndex = new HashMap<String, Integer>();
+
+  public static enum ButtonType {
+    TOGGLABLE, POV, DOUBLE, HOLD;
+  }
 
   public void initalizeJoystick() {
     //Joyctick object
@@ -67,10 +79,24 @@ public class OI {
   public void initalizeXbox() {
     //Xbox controller object
     controller = new XboxController(ControllerMap.controller);
-    buttons.add(new TogglableButton(controller, XboxMap.AButton));
-    buttons.add(new TogglableButton(controller, XboxMap.YButton));
-    buttons.add(new TogglableButton(controller, XboxMap.RightBumper));
-    buttons.add(new TogglableButton(controller, XboxMap.LeftBumper));
 
+    // Add indexes for buttons
+    commandIndex.put("hatchPivot", 0);
+    commandIndex.put("hatchGrabber", 1);
+    commandIndex.put("grabHab", 2);
+    commandIndex.put("climberLatch", 3);
+    commandIndex.put("climbUp", 0);
+    commandIndex.put("climbDown", 1);
+    commandIndex.put("climbRelease", 0);
+
+    togglableButtons.add(new TogglableButton(controller, XboxMap.YButton)); // hatch pivot
+    togglableButtons.add(new TogglableButton(controller, XboxMap.AButton)); // hatch grabber
+    togglableButtons.add(new TogglableButton(controller, XboxMap.LeftBumper)); // grab hab
+    togglableButtons.add(new TogglableButton(controller, XboxMap.BButton)); // climber latch
+
+    povButtons.add(new POVButton(controller, 0)); // climb up
+    povButtons.add(new POVButton(controller, 180)); // climb down
+
+    doubleButtons.add(new DoubleButton(new ButtonTracker(controller, XboxMap.BackButton), new ButtonTracker(controller, XboxMap.StartButton))); // climb release
   }
 }

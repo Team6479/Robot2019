@@ -12,10 +12,9 @@ import frc.robot.OI.ButtonType;
 import frc.robot.Robot;
 import frc.robot.util.control.Controllers;
 
-public class HatchPivot extends Command {
-  
-  public HatchPivot() {
-    requires(Robot.hatchPivot);
+public class Climber extends Command {
+  public Climber() {
+    requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
@@ -26,11 +25,10 @@ public class HatchPivot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Controllers.checkButtonStatus(Robot.oi.commandIndex.get("hatchPivot"), ButtonType.TOGGLABLE)) {
-      Robot.hatchPivot.pivotForward();
-    } else {
-      Robot.hatchPivot.pivotBack();
-    }
+    Robot.climber.setRelease(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbRelease"), ButtonType.DOUBLE));
+    Robot.climber.setGrab(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("grabHab"), ButtonType.TOGGLABLE));
+    Robot.climber.setClimberSpark(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbUp"), ButtonType.POV), 
+        Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbDown"), ButtonType.POV));
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -7,15 +7,18 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI.ButtonType;
 import frc.robot.Robot;
-import frc.robot.util.control.Controllers;
 
-public class HatchPivot extends Command {
-  
-  public HatchPivot() {
-    requires(Robot.hatchPivot);
+public class PusherReset extends Command {
+  Timer timer;
+  boolean wasJustPressed;
+  double extendTime;
+  public PusherReset() {
+    timer = new Timer();
+    wasJustPressed = false;
+    extendTime = 1;
   }
 
   // Called just before this Command runs the first time
@@ -26,10 +29,14 @@ public class HatchPivot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Controllers.checkButtonStatus(Robot.oi.commandIndex.get("hatchPivot"), ButtonType.TOGGLABLE)) {
-      Robot.hatchPivot.pivotForward();
-    } else {
-      Robot.hatchPivot.pivotBack();
+    if (!wasJustPressed && Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonState()) {
+      wasJustPressed = true;
+      timer.start();
+    } else if (timer.get() > extendTime && wasJustPressed) {
+      Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).setButtonState(false);
+      timer.stop();
+      timer.reset();
+      wasJustPressed = false;
     }
   }
 
