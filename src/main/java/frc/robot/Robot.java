@@ -16,6 +16,8 @@ import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.HatchPivot;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.commands.PusherReset;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.TCP;
 import frc.robot.subsystems.JetsonSSH;
 import frc.robot.util.control.Controllers;
@@ -34,6 +36,7 @@ public class Robot extends TimedRobot {
   public static TCP tcp;
   public static Gyro gyro;
   public static Pneumatics pneumatics;
+  public static Climber climber;
   public static HatchPivot hatchPivot;
   public static HatchGrabber hatchGrabber;
   private SendableChooser<ControllerType> controller;
@@ -57,6 +60,8 @@ public class Robot extends TimedRobot {
     hatchPivot = new HatchPivot();
     hatchGrabber = new HatchGrabber();
 
+    climber = new Climber();
+
     hatchPivot.pivotForward();
     hatchGrabber.grab();
 
@@ -64,10 +69,11 @@ public class Robot extends TimedRobot {
 
     Controllers.setControllerType(Controllers.ControllerType.xbox);
     controller = new SendableChooser<ControllerType>();
+    controller.setDefaultOption(ControllerType.xbox.getKey(), ControllerType.xbox);
     controller.addOption(ControllerType.joystick.getKey(), ControllerType.joystick);
-    controller.addOption(ControllerType.xbox.getKey(), ControllerType.xbox);
     SmartDashboard.putData(ControllerType.name, controller);
-    oi = new OI();
+
+
   }
 
   /**
@@ -122,6 +128,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     Controllers.setControllerType(controller.getSelected());
+    new PusherReset().start();
   }
 
   /**
