@@ -48,6 +48,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    jetsonSSH = new JetsonSSH();
+    
     drivetrain = new Drivetrain();
 
     oi = new OI();
@@ -64,8 +66,6 @@ public class Robot extends TimedRobot {
 
     hatchPivot.pivotForward();
     hatchGrabber.grab();
-
-    jetsonSSH = new JetsonSSH();
 
     Controllers.setControllerType(Controllers.ControllerType.xbox);
     controller = new SendableChooser<ControllerType>();
