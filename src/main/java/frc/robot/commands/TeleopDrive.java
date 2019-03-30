@@ -35,9 +35,19 @@ public class TeleopDrive extends Command {
     // scale = 1;    
     // Robot.drivetrain.arcadeDrive(Robot.oi.controller.getX(Hand.kLeft),
     // Robot.oi.controller.getY(Hand.kLeft));
+    double totalValue = Math.abs(Controllers.getXAxis()) + Math.abs(Controllers.getYAxis()) + Math.abs(Controllers.getZAxis());
+
     Controllers.updateButtons();
-    Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllers.getYAxis() * scale);
-    // Robot.drivetrain.mecanumDrive(1, 0, 0);
+    if(totalValue < 0.1) {
+      // Robot.drivetrain.set(ControlMode.PercentOutput, 0);
+      Robot.drivetrain.leftMaster.neutralOutput();
+      Robot.drivetrain.leftSlave.neutralOutput();
+      Robot.drivetrain.rightMaster.neutralOutput();
+      Robot.drivetrain.rightSlave.neutralOutput();
+    }
+    else {
+      Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllers.getYAxis() * scale);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
