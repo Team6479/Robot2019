@@ -24,6 +24,8 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
+  // Relays
+  public static final int CLIMBER_SPIKE = 0;
   // PWM
   public static final int CLIMBER_SPARK = 0;
   // Drivetrain Motors
@@ -35,10 +37,10 @@ public class RobotMap {
   // Pneumatics
   public static final int COMPRESSOR = 0;
   public static final int SOLENOID_PLACEHOLDER = 0;
-  public static final int SOLENOID_HATCH_PIVOT_0 = 1;
-  public static final int SOLENOID_HATCH_PIVOT_1 = 0;
-  public static final int SOLENOID_HATCH_GRABBER_0 = 3;
-  public static final int SOLENOID_HATCH_GRABBER_1 = 2;
+  public static final int SOLENOID_HATCH_PIVOT_0 = 3;
+  public static final int SOLENOID_HATCH_PIVOT_1 = 2;
+  public static final int SOLENOID_HATCH_GRABBER_0 = 1;
+  public static final int SOLENOID_HATCH_GRABBER_1 = 0;
   public static final int SOLENOID_CLIMBER_0 = 6; // These will be changed later
   public static final int SOLENOID_CLIMBER_1 = 7; // These will be changed later
   public static final int SOLENOID_PUSHER_0 = 4;

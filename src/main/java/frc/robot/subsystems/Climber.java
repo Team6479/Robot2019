@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+// import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -19,11 +20,13 @@ public class Climber extends Subsystem {
   public DoubleSolenoid climberSolRelease;
   public DoubleSolenoid climberSolGrab;
   public Spark climber;
+  // public Relay spike;
 
   public Climber() {
     climberSolRelease = new DoubleSolenoid(RobotMap.SOLENOID_PUSHER_0, RobotMap.SOLENOID_PUSHER_1);
     climberSolGrab = new DoubleSolenoid(RobotMap.SOLENOID_CLIMBER_0, RobotMap.SOLENOID_CLIMBER_1);
     climber = new Spark(RobotMap.CLIMBER_SPARK);
+    // spike = new Relay(RobotMap.CLIMBER_SPIKE);
   }
 
   public void setRelease(boolean state) { // true = extended, false = retracted
@@ -54,6 +57,12 @@ public class Climber extends Subsystem {
       climber.set(0);
     } 
   }
+
+  // public void setClimberSpike(boolean state) {
+  //   if (state) {
+  //     spike.
+  //   }
+  // }
 
   @Override
   public void initDefaultCommand() {
