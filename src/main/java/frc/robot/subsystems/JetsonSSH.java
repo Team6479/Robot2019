@@ -38,6 +38,7 @@ public class JetsonSSH extends Subsystem {
     } catch (Exception e) {
       DriverStation.reportError(e.getMessage(), true);
     }
+    run("vision-2019 tape");
   }
   
   /**
