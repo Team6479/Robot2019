@@ -13,7 +13,6 @@ import com.jcraft.jsch.Session;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.StartJetsonCode;
 
 /**
  * Add your docs here.
@@ -35,10 +34,12 @@ public class JetsonSSH extends Subsystem {
       session = jsch.getSession(username, ip, port);
       session.setPassword(password);
       session.setConfig("StrictHostKeyChecking", "no");
+      session.connect();
     } catch (Exception e) {
       DriverStation.reportError(e.getMessage(), true);
     }
   }
+  
   /**
    * @param ip The IP address to connect to (assumes port 22)
    * @param username The username
@@ -74,6 +75,6 @@ public class JetsonSSH extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new StartJetsonCode());
+    // setDefaultCommand(new StartJetsonCode());
   }
 }
