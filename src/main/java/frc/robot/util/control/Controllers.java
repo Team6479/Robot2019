@@ -23,7 +23,8 @@ public class Controllers {
    */
   public static enum ControllerType {
     xbox("XBOX"),
-    joystick("JOYSTICK");
+    joystick("JOYSTICK"),
+    nothing("NULL");
 
     private ControllerType(String key) {
       this.key = key;
@@ -52,6 +53,8 @@ public class Controllers {
       Robot.oi.initalizeJoystick();
     } else if (controllerType == ControllerType.xbox) {
       Robot.oi.initalizeXbox();
+    } else if (controllerType == ControllerType.nothing) {
+      Robot.oi.initalizeNull();
     }
   }
 

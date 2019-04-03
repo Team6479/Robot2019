@@ -22,13 +22,18 @@ public class POVButton {
     public POVButton(GenericHID controller, int direction) {
         this.controller = controller;
         this.direction = direction;
+        this.nullController = false;
+    }
+
+    public POVButton() {
+        this.nullController = true;
     }
 
     /**
      * @return the button's state
      */
     public boolean getButtonState() {
-        if (controller.getPOV() == direction) {
+        if (!nullController && controller.getPOV() == direction) {
             return true;
         }
         return false;
@@ -36,4 +41,5 @@ public class POVButton {
 
     private GenericHID controller;
     private int direction;
+    private boolean nullController;
 }

@@ -29,6 +29,7 @@ public class Climber extends Command {
     Robot.climber.setGrab(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("grabHab"), ButtonType.TOGGLABLE));
     Robot.climber.setClimberSpark(Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbUp"), ButtonType.POV), 
         Controllers.checkButtonStatus(Robot.oi.commandIndex.get("climbDown"), ButtonType.POV));
+    Robot.climber.setSpike(true);
   }
 
   // Make this return true when this Command no longer needs to run execute()

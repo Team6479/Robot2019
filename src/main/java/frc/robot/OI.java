@@ -99,4 +99,28 @@ public class OI {
 
     doubleButtons.add(new DoubleButton(new ButtonTracker(controller, XboxMap.BackButton), new ButtonTracker(controller, XboxMap.StartButton))); // climb release
   }
+
+  public void initalizeNull() {
+    // Fake xbox controller object
+    controller = new XboxController(ControllerMap.controller);
+
+    // Add indexes for buttons
+    commandIndex.put("hatchPivot", 0);
+    commandIndex.put("hatchGrabber", 1);
+    commandIndex.put("grabHab", 2);
+    commandIndex.put("climberLatch", 3);
+    commandIndex.put("climbUp", 0);
+    commandIndex.put("climbDown", 1);
+    commandIndex.put("climbRelease", 0);
+
+    togglableButtons.add(new TogglableButton(controller, XboxMap.YButton)); // hatch pivot
+    togglableButtons.add(new TogglableButton(controller, XboxMap.AButton)); // hatch grabber
+    togglableButtons.add(new TogglableButton(controller, XboxMap.LeftBumper)); // grab hab
+    togglableButtons.add(new TogglableButton(controller, XboxMap.BButton)); // climber latch
+
+    povButtons.add(new POVButton()); // null climb up
+    povButtons.add(new POVButton()); // null climb down
+
+    doubleButtons.add(new DoubleButton(new ButtonTracker(controller, XboxMap.BackButton), new ButtonTracker(controller, XboxMap.StartButton))); // climb release
+  }
 }
