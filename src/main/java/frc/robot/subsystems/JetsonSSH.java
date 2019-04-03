@@ -86,7 +86,7 @@ public class JetsonSSH extends Subsystem {
         readByte = commandOutput.read();
       }
       channelExec.disconnect();
-      System.out.println("Ran \"" + command +"\" with output: \"" + outputBuffer.toString() +"\" and exit code: " + channelExec.getExitStatus());
+      // System.out.println("Ran \"" + command +"\" with output: \"" + outputBuffer.toString() +"\" and exit code: " + channelExec.getExitStatus());
       return channelExec.getExitStatus();
     } catch (Exception e) {
       DriverStation.reportError(e.getMessage(), true);
