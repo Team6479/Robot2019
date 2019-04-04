@@ -11,14 +11,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.PusherReset;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.HatchPivot;
 import frc.robot.subsystems.Pneumatics;
-import frc.robot.commands.PusherReset;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.TCP;
+import frc.robot.subsystems.JetsonSSH;
 import frc.robot.util.control.Controllers;
 import frc.robot.util.control.Controllers.ControllerType;
 
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
   public static HatchPivot hatchPivot;
   public static HatchGrabber hatchGrabber;
   private SendableChooser<ControllerType> controller;
+  public static JetsonSSH jetsonSSH;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -46,6 +48,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    jetsonSSH = new JetsonSSH();
+    
     drivetrain = new Drivetrain();
 
     oi = new OI();
@@ -125,6 +129,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     Controllers.setControllerType(controller.getSelected());
+    oi.doubleButtons.get(oi.commandIndex.get("climbRelease")).setButtonState(false);
     new PusherReset().start();
   }
 

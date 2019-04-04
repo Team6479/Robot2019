@@ -123,10 +123,15 @@ public class Drivetrain extends Subsystem {
     rightMaster.configClosedloopRamp(0.1);
     rightSlave.configClosedloopRamp(0.1);
 
-    configTalonPID(leftMaster, .925, .0005, 0, 0);
-    configTalonPID(leftSlave, .9, .0006, 0, 0);
-    configTalonPID(rightMaster, .9, .0006, 0, 0);
+    configTalonPID(leftMaster, .925, .001, 0, 0);
+    configTalonPID(leftSlave, .9, .0005, 0, 0);
+    configTalonPID(rightMaster, .9, .001, 0, 0);
     configTalonPID(rightSlave, .925, .0005, 0, 0);
+
+    // configTalonPID(leftMaster, .925, .0005, 0, 0);
+    // configTalonPID(leftSlave, .9, .0006, 0, 0);
+    // configTalonPID(rightMaster, .9, .0006, 0, 0);
+    // configTalonPID(rightSlave, .925, .0005, 0, 0);
 
     resetEncoders();
   }
