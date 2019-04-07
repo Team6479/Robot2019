@@ -10,14 +10,14 @@ package frc.robot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import frc.robot.util.control.buttonTypes.POVButton;
 import frc.robot.drivers.Joystick;
 import frc.robot.drivers.XboxController;
 import frc.robot.util.control.ControllerMap;
 import frc.robot.util.control.JoystickMap;
-import frc.robot.util.control.buttonTypes.DoubleButton;
-import frc.robot.util.control.buttonTypes.TogglableButton;
 import frc.robot.util.control.buttonTypes.ButtonTracker;
+import frc.robot.util.control.buttonTypes.DoubleButton;
+import frc.robot.util.control.buttonTypes.POVButton;
+import frc.robot.util.control.buttonTypes.TogglableButton;
 import robot.controllers.XboxMap;
 
 /**
@@ -68,6 +68,13 @@ public class OI {
 
   public static enum ButtonType {
     TOGGLABLE, POV, DOUBLE, HOLD;
+  }
+
+  public void resetArrays() {
+    togglableButtons.clear();
+    doubleButtons.clear();
+    povButtons.clear();
+    commandIndex.clear();
   }
 
   public void initalizeJoystick() {

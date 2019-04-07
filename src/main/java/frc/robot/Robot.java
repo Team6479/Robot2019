@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -17,9 +18,9 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.HatchPivot;
+import frc.robot.subsystems.JetsonSSH;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.TCP;
-import frc.robot.subsystems.JetsonSSH;
 import frc.robot.util.control.Controllers;
 import frc.robot.util.control.Controllers.ControllerType;
 
@@ -48,13 +49,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    jetsonSSH = new JetsonSSH();
+    // jetsonSSH = new JetsonSSH();
     
     drivetrain = new Drivetrain();
 
     oi = new OI();
 
-    tcp = new TCP();
+    // tcp = new TCP();
 
     gyro = new Gyro();
 
@@ -64,19 +65,21 @@ public class Robot extends TimedRobot {
 
     climber = new Climber();
 
-    hatchPivot.pivotForward();
-    hatchGrabber.grab();
+    // hatchGrabber.grab();
+    hatchGrabber.release();
+    hatchPivot.pivotBack();
 
-    Controllers.setControllerType(Controllers.ControllerType.xbox);
+    // disabledInit();
+
     controller = new SendableChooser<ControllerType>();
     controller.setDefaultOption(ControllerType.xbox.getKey(), ControllerType.xbox);
     controller.addOption(ControllerType.joystick.getKey(), ControllerType.joystick);
     controller.addOption(ControllerType.nothing.getKey(), ControllerType.nothing);
     SmartDashboard.putData(ControllerType.name, controller);
 
-
+    CameraServer.getInstance().startAutomaticCapture();
   }
-
+  
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
@@ -88,7 +91,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
   }
-
+  
   /**
    * This function is called once each time the robot enters Disabled mode.
    * You can use it to reset any subsystem information you want to clear when
@@ -97,7 +100,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
   }
-
+  
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
@@ -116,6 +119,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    teleopInit();
   }
 
   /**
@@ -128,7 +132,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Controllers.setControllerType(controller.getSelected());
+    try {
+      Controllers.setControllerType(controller.getSelected());
+    }
+    catch(NullPointerException e) {
+      Controllers.setControllerType(Controllers.ControllerType.xbox);
+    }
     oi.doubleButtons.get(oi.commandIndex.get("climbRelease")).setButtonState(false);
     new PusherReset().start();
   }

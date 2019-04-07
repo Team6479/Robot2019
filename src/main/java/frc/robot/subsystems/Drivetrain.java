@@ -118,15 +118,15 @@ public class Drivetrain extends Subsystem {
      * All others = 0
      */
 
-    leftMaster.configClosedloopRamp(0.1);
-    leftSlave.configClosedloopRamp(0.1);
-    rightMaster.configClosedloopRamp(0.1);
-    rightSlave.configClosedloopRamp(0.1);
+    // leftMaster.configClosedloopRamp(0.1);
+    // leftSlave.configClosedloopRamp(0.1);
+    // rightMaster.configClosedloopRamp(0.1);
+    // rightSlave.configClosedloopRamp(0.1);
 
-    configTalonPID(leftMaster, .925, .001, 0, 0);
-    configTalonPID(leftSlave, .9, .0005, 0, 0);
-    configTalonPID(rightMaster, .9, .001, 0, 0);
-    configTalonPID(rightSlave, .925, .0005, 0, 0);
+    // configTalonPID(leftMaster, .925, .001, 0, 0);
+    // configTalonPID(leftSlave, .9, .0005, 0, 0);
+    // configTalonPID(rightMaster, .9, .001, 0, 0);
+    // configTalonPID(rightSlave, .925, .0005, 0, 0);
 
     // configTalonPID(leftMaster, .925, .0005, 0, 0);
     // configTalonPID(leftSlave, .9, .0006, 0, 0);
@@ -197,10 +197,14 @@ public class Drivetrain extends Subsystem {
    * @param rightSlaveSpeed What it looks like
    */
   public void rawMecnumDrive(double leftMasterSpeed, double leftSlaveSpeed, double rightMasterSpeed, double rightSlaveSpeed) {
-    leftMaster.set(ControlMode.Velocity, percentToUnits(leftMasterSpeed, INTERVAL, RPM, CPR));
-    leftSlave.set(ControlMode.Velocity, percentToUnits(leftSlaveSpeed, INTERVAL, RPM, CPR));
-    rightMaster.set(ControlMode.Velocity, percentToUnits(rightMasterSpeed, INTERVAL, RPM, CPR));
-    rightSlave.set(ControlMode.Velocity, percentToUnits(rightSlaveSpeed, INTERVAL, RPM, CPR));
+    // leftMaster.set(ControlMode.Velocity, percentToUnits(leftMasterSpeed, INTERVAL, RPM, CPR));
+    // leftSlave.set(ControlMode.Velocity, percentToUnits(leftSlaveSpeed, INTERVAL, RPM, CPR));
+    // rightMaster.set(ControlMode.Velocity, percentToUnits(rightMasterSpeed, INTERVAL, RPM, CPR));
+    // rightSlave.set(ControlMode.Velocity, percentToUnits(rightSlaveSpeed, INTERVAL, RPM, CPR));
+    leftMaster.set(ControlMode.PercentOutput, leftMasterSpeed);
+    leftSlave.set(ControlMode.PercentOutput, leftSlaveSpeed);
+    rightMaster.set(ControlMode.PercentOutput, rightMasterSpeed);
+    rightSlave.set(ControlMode.PercentOutput, rightSlaveSpeed);
   }
 
   /**

@@ -8,9 +8,9 @@
 package frc.robot.util.control;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.OI.ButtonType;
 import frc.robot.Robot;
 import robot.controllers.XboxMap;
-import frc.robot.OI.ButtonType;
 
 /**
  * Class to handle all controller values and buttons

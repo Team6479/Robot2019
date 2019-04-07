@@ -50,25 +50,25 @@ public class JetsonSSH extends Subsystem {
   }
   
   /**
-   * @param ip The IP address to connect to (assumes port 22)
+   * @param ip The IP address to connect to (assumes port 1181)
    * @param username The username
    * @param password The password
    */
   public JetsonSSH(String ip, String username, String password) {
-    this(ip, 22, username, password);
+    this(ip, 1181, username, password);
   }
   /**
-   * @param ip The IP address to connect to (assumes port 22)
-   * Assumes port 22 and login "nvidia"/"nvidia"
+   * @param ip The IP address to connect to (assumes port 1181)
+   * Assumes port 1181 and login "nvidia"/"nvidia"
    */
   public JetsonSSH(String ip) {
-    this(ip, 22, "nvidia", "nvidia");
+    this(ip, 1181, "nvidia", "nvidia");
   }
   /**
-   * Assumes port 192.168.1.7:22 and login "nvidia"/"nvidia"
+   * Assumes port 10.64.79.11:1181 and login "nvidia"/"nvidia"
    */
   public JetsonSSH() {
-    this("192.168.1.7", 22, "nvidia", "nvidia");
+    this("10.64.79.11", 1181, "nvidia", "nvidia");
   }
 
   public int run(String command) {
