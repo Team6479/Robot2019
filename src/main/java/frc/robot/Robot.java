@@ -7,9 +7,22 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.PusherReset;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.HatchPivot;
+import frc.robot.subsystems.JetsonSSH;
+import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.TCP;
+import frc.robot.util.control.Controllers;
+import frc.robot.util.control.Controllers.ControllerType;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,6 +34,14 @@ import frc.robot.subsystems.Drivetrain;
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static OI oi;
+  public static TCP tcp;
+  public static Gyro gyro;
+  public static Pneumatics pneumatics;
+  public static Climber climber;
+  public static HatchPivot hatchPivot;
+  public static HatchGrabber hatchGrabber;
+  private SendableChooser<ControllerType> controller;
+  public static JetsonSSH jetsonSSH;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -28,11 +49,37 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // jetsonSSH = new JetsonSSH();
+    
     drivetrain = new Drivetrain();
 
     oi = new OI();
-  }
 
+    // tcp = new TCP();
+
+    gyro = new Gyro();
+
+    pneumatics = new Pneumatics();
+    hatchPivot = new HatchPivot();
+    hatchGrabber = new HatchGrabber();
+
+    climber = new Climber();
+
+    // hatchGrabber.grab();
+    hatchGrabber.release();
+    hatchPivot.pivotBack();
+
+    // disabledInit();
+
+    controller = new SendableChooser<ControllerType>();
+    controller.setDefaultOption(ControllerType.xbox.getKey(), ControllerType.xbox);
+    controller.addOption(ControllerType.joystick.getKey(), ControllerType.joystick);
+    controller.addOption(ControllerType.nothing.getKey(), ControllerType.nothing);
+    SmartDashboard.putData(ControllerType.name, controller);
+
+    CameraServer.getInstance().startAutomaticCapture();
+  }
+  
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
@@ -44,7 +91,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
   }
-
+  
   /**
    * This function is called once each time the robot enters Disabled mode.
    * You can use it to reset any subsystem information you want to clear when
@@ -53,7 +100,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
   }
-
+  
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
@@ -72,6 +119,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    teleopInit();
   }
 
   /**
@@ -84,6 +132,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    try {
+      Controllers.setControllerType(controller.getSelected());
+    }
+    catch(NullPointerException e) {
+      Controllers.setControllerType(Controllers.ControllerType.xbox);
+    }
+    oi.doubleButtons.get(oi.commandIndex.get("climbRelease")).setButtonState(false);
+    new PusherReset().start();
   }
 
   /**
@@ -91,6 +147,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putBoolean("Axis Lock", Controllers.axisIsLocked);
     Scheduler.getInstance().run();
   }
 

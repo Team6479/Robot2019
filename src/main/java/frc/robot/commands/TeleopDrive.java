@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.util.Controllers;
+import frc.robot.util.control.Controllers;
 
 /**
  * An example command. You can replace me with your own command.
@@ -32,9 +32,22 @@ public class TeleopDrive extends Command {
   protected void execute() {
     // Execute arcadeDrive with the x axis and y axis
     scale = (-Controllers.getThrottle() + 1) / 2;
+    // scale = 1;    
     // Robot.drivetrain.arcadeDrive(Robot.oi.controller.getX(Hand.kLeft),
     // Robot.oi.controller.getY(Hand.kLeft));
-    Robot.drivetrain.arcadeDrive(Controllers.getYAxis() * scale, Controllers.getXAxis() * scale);
+    double totalValue = Math.abs(Controllers.getXAxis()) + Math.abs(Controllers.getYAxis()) + Math.abs(Controllers.getZAxis());
+
+    Controllers.updateButtons();
+    if(totalValue < 0.1) {
+      // Robot.drivetrain.set(ControlMode.PercentOutput, 0);
+      Robot.drivetrain.leftMaster.neutralOutput();
+      Robot.drivetrain.leftSlave.neutralOutput();
+      Robot.drivetrain.rightMaster.neutralOutput();
+      Robot.drivetrain.rightSlave.neutralOutput();
+    }
+    else {
+      Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllers.getYAxis() * scale);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
