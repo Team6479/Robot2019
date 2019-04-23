@@ -33,7 +33,7 @@ public class POVButton {
      * @return the button's state
      */
     public boolean getButtonState() {
-        if (!nullController && controller.getPOV() == direction) {
+        if (!nullController && (controller.getPOV() == direction || controller.getPOV() + 45 == direction || controller.getPOV() - 45 == direction)) {
             return true;
         }
         return false;
