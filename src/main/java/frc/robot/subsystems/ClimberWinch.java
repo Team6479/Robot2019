@@ -35,6 +35,6 @@ public class ClimberWinch extends Subsystem {
   }
 
   public void stop() {
-    climberMotor.stopMotor();
+    climberMotor.set(0);
   }
 }
