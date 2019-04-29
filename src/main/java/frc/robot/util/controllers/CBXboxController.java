@@ -41,24 +41,21 @@ public class CBXboxController extends XboxController {
   }
 
   public Button getButton(Buttons button) {
-    try {
-      return buttons.get(button);
-    }
-    catch(Exception e) {
+
+    if (buttons.get(button) == null) {
       buttons.put(button, new JoystickButton(this, button.value));
-      return buttons.get(button);
     }
+
+    return buttons.get(button);
   }
 
   public Button getPOVButton(int angle, boolean fuzzy) {
     int povHash = Objects.hash(angle, fuzzy);
 
-    try {
-      return povButtons.get(povHash);
-    }
-    catch (Exception e) {
+    if (povButtons.get(povHash) == null) {
       povButtons.put(povHash, new POVButton(this, angle, fuzzy));
-      return povButtons.get(povHash);
     }
+
+    return povButtons.get(povHash);
   }
 }
