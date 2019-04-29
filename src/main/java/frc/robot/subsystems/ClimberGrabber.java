@@ -14,14 +14,11 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class HatchGrabber extends Subsystem {
-  private DoubleSolenoid grabberSol;
+public class ClimberGrabber extends Subsystem {
+  private DoubleSolenoid climberDubSol;
 
-  public HatchGrabber() {
-    grabberSol = new DoubleSolenoid(RobotMap.SOLENOID_HATCH_GRABBER_0, RobotMap.SOLENOID_HATCH_GRABBER_1);
-
-    // Set default state to grab
-    grab();
+  public ClimberGrabber() {
+    climberDubSol = new DoubleSolenoid(RobotMap.SOLENOID_CLIMBER_0, RobotMap.SOLENOID_CLIMBER_1);
   }
 
   @Override
@@ -29,15 +26,15 @@ public class HatchGrabber extends Subsystem {
   }
 
   public void grab() {
-    grabberSol.set(DoubleSolenoid.Value.kForward);
+    climberDubSol.set(DoubleSolenoid.Value.kForward);
   }
 
   public void release() {
-    grabberSol.set(DoubleSolenoid.Value.kReverse);
+    climberDubSol.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void toggle() {
-    DoubleSolenoid.Value state = grabberSol.get();
+    DoubleSolenoid.Value state = climberDubSol.get();
     if (state == DoubleSolenoid.Value.kForward) {
       this.release();
     }
@@ -46,5 +43,4 @@ public class HatchGrabber extends Subsystem {
       this.grab();
     }
   }
-
 }

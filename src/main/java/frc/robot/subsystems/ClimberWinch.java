@@ -7,44 +7,35 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.ClimberClimb;
 
 /**
  * Add your docs here.
  */
-public class HatchGrabber extends Subsystem {
-  private DoubleSolenoid grabberSol;
+public class ClimberWinch extends Subsystem {
+  private Spark climberMotor;
 
-  public HatchGrabber() {
-    grabberSol = new DoubleSolenoid(RobotMap.SOLENOID_HATCH_GRABBER_0, RobotMap.SOLENOID_HATCH_GRABBER_1);
-
-    // Set default state to grab
-    grab();
+  public ClimberWinch() {
+    climberMotor = new Spark(RobotMap.CLIMBER_SPARK);
   }
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new ClimberClimb());
   }
 
-  public void grab() {
-    grabberSol.set(DoubleSolenoid.Value.kForward);
+  public void pull() {
+    climberMotor.set(-1);
   }
 
   public void release() {
-    grabberSol.set(DoubleSolenoid.Value.kReverse);
+    climberMotor.set(0.5);
   }
 
-  public void toggle() {
-    DoubleSolenoid.Value state = grabberSol.get();
-    if (state == DoubleSolenoid.Value.kForward) {
-      this.release();
-    }
-    // This should trigger for both kOff and kReverse states
-    else {
-      this.grab();
-    }
+  public void stop() {
+    climberMotor.stopMotor();
   }
-
 }

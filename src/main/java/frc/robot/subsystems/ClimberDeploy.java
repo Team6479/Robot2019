@@ -14,37 +14,22 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class HatchGrabber extends Subsystem {
-  private DoubleSolenoid grabberSol;
+public class ClimberDeploy extends Subsystem {
+  private DoubleSolenoid deployDubSol;
 
-  public HatchGrabber() {
-    grabberSol = new DoubleSolenoid(RobotMap.SOLENOID_HATCH_GRABBER_0, RobotMap.SOLENOID_HATCH_GRABBER_1);
-
-    // Set default state to grab
-    grab();
+  public ClimberDeploy() {
+    deployDubSol = new DoubleSolenoid(RobotMap.SOLENOID_PUSHER_0, RobotMap.SOLENOID_PUSHER_1);
   }
 
   @Override
   public void initDefaultCommand() {
   }
 
-  public void grab() {
-    grabberSol.set(DoubleSolenoid.Value.kForward);
+  public void deploy() {
+    deployDubSol.set(DoubleSolenoid.Value.kForward);
   }
 
-  public void release() {
-    grabberSol.set(DoubleSolenoid.Value.kReverse);
+  public void retract() {
+    deployDubSol.set(DoubleSolenoid.Value.kReverse);
   }
-
-  public void toggle() {
-    DoubleSolenoid.Value state = grabberSol.get();
-    if (state == DoubleSolenoid.Value.kForward) {
-      this.release();
-    }
-    // This should trigger for both kOff and kReverse states
-    else {
-      this.grab();
-    }
-  }
-
 }

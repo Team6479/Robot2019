@@ -15,11 +15,17 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class HatchPivot extends Subsystem {
-  
-  DoubleSolenoid pivotSol;
+  private DoubleSolenoid pivotSol;
 
   public HatchPivot() {
     pivotSol = new DoubleSolenoid(RobotMap.SOLENOID_HATCH_PIVOT_0, RobotMap.SOLENOID_HATCH_PIVOT_1);
+
+    // Set default state to inside robot frame
+    pivotBack();
+  }
+
+  @Override
+  public void initDefaultCommand() {
   }
 
   public void pivotForward() {
@@ -30,10 +36,15 @@ public class HatchPivot extends Subsystem {
     pivotSol.set(DoubleSolenoid.Value.kReverse);
   }
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new frc.robot.commands.HatchPivot());
+  public void toggle() {
+    DoubleSolenoid.Value state = pivotSol.get();
+    if (state == DoubleSolenoid.Value.kForward) {
+      this.pivotBack();
+    }
+    // This should trigger for both kOff and kReverse states
+    else {
+      this.pivotForward();
+    }
   }
+
 }

@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -7,18 +7,12 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.util.control.Controllers;
 
-/**
- * An example command. You can replace me with your own command.
- */
 public class TeleopDrive extends Command {
-  private double scale;
-
   public TeleopDrive() {
-    // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);
   }
 
@@ -27,27 +21,12 @@ public class TeleopDrive extends Command {
   protected void initialize() {
   }
 
-  // Called repeatedly when \this Command is scheduled to run
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Execute arcadeDrive with the x axis and y axis
-    scale = (-Controllers.getThrottle() + 1) / 2;
-    // scale = 1;    
-    // Robot.drivetrain.arcadeDrive(Robot.oi.controller.getX(Hand.kLeft),
-    // Robot.oi.controller.getY(Hand.kLeft));
-    double totalValue = Math.abs(Controllers.getXAxis()) + Math.abs(Controllers.getYAxis()) + Math.abs(Controllers.getZAxis());
-
-    Controllers.updateButtons();
-    if(totalValue < 0.1) {
-      // Robot.drivetrain.set(ControlMode.PercentOutput, 0);
-      Robot.drivetrain.leftMaster.neutralOutput();
-      Robot.drivetrain.leftSlave.neutralOutput();
-      Robot.drivetrain.rightMaster.neutralOutput();
-      Robot.drivetrain.rightSlave.neutralOutput();
-    }
-    else {
-      Robot.drivetrain.mecanumDrive(Controllers.getXAxis() * scale, Controllers.getZAxis() * scale, Controllers.getYAxis() * scale);
-    }
+    Robot.drivetrain.mecanumDrive(Robot.oi.xbox.getTriggerAxis(Hand.kRight) - Robot.oi.xbox.getTriggerAxis(Hand.kLeft),
+                                  Robot.oi.xbox.getX(Hand.kRight),
+                                  -Robot.oi.xbox.getY(Hand.kLeft));
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -56,13 +35,16 @@ public class TeleopDrive extends Command {
     return false;
   }
 
+  // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drivetrain.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

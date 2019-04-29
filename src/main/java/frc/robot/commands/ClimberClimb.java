@@ -7,18 +7,12 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class PusherReset extends Command {
-  Timer timer;
-  boolean wasJustPressed;
-  double extendTime;
-  public PusherReset() {
-    timer = new Timer();
-    wasJustPressed = false;
-    extendTime = 1;
+public class ClimberClimb extends Command {
+  public ClimberClimb() {
+    requires(Robot.climberWinch);
   }
 
   // Called just before this Command runs the first time
@@ -29,14 +23,14 @@ public class PusherReset extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (!wasJustPressed && Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).getButtonState()) {
-      wasJustPressed = true;
-      timer.start();
-    } else if (timer.get() > extendTime && wasJustPressed) {
-      Robot.oi.doubleButtons.get(Robot.oi.commandIndex.get("climbRelease")).setButtonState(false);
-      timer.stop();
-      timer.reset();
-      wasJustPressed = false;
+    if (Robot.oi.xbox.getPOVButton(0, true).get()) {
+      Robot.climberWinch.pull();
+    }
+    else if (Robot.oi.xbox.getPOVButton(180, true).get()) {
+      Robot.climberWinch.release();
+    }
+    else {
+      Robot.climberWinch.stop();
     }
   }
 
