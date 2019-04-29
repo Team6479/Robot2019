@@ -24,6 +24,11 @@ public class OI {
     xbox.getButton(Buttons.kA).whenPressed(new InstantCommand(Robot.hatchGrabber, Robot.hatchGrabber::toggle));
     xbox.getButton(Buttons.kY).whenPressed(new InstantCommand(Robot.hatchPivot, Robot.hatchPivot::toggle));
     xbox.getButton(Buttons.kBumperLeft).whenPressed(new InstantCommand(Robot.climberGrabber, Robot.hatchGrabber::toggle));
+    xbox.getPOVButton(0, true).whenPressed(new InstantCommand(Robot.climberWinch, Robot.climberWinch::pull));
+    xbox.getPOVButton(0, true).whenReleased(new InstantCommand(Robot.climberWinch, Robot.climberWinch::stop));
+    xbox.getPOVButton(180, true).whenPressed(new InstantCommand(Robot.climberWinch, Robot.climberWinch::release));
+    xbox.getPOVButton(180, true).whenReleased(new InstantCommand(Robot.climberWinch, Robot.climberWinch::stop));
+
     new MultiButton(xbox, Buttons.kStart.value, Buttons.kBack.value).whenPressed(new DeployClimber());
   }
 }

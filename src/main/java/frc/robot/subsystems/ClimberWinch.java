@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.ClimberClimb;
 
 /**
  * Add your docs here.
@@ -24,7 +23,7 @@ public class ClimberWinch extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new ClimberClimb());
+    // setDefaultCommand(new ClimberClimb());
   }
 
   public void pull() {
