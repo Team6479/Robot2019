@@ -42,7 +42,7 @@ public class CBXboxController extends XboxController {
 
   public Button getButton(Buttons button) {
 
-    if (buttons.get(button) == null) {
+    if (!buttons.containsKey(button)) {
       buttons.put(button, new JoystickButton(this, button.value));
     }
 
@@ -52,7 +52,7 @@ public class CBXboxController extends XboxController {
   public Button getPOVButton(int angle, boolean fuzzy) {
     int povHash = Objects.hash(angle, fuzzy);
 
-    if (povButtons.get(povHash) == null) {
+    if (!povButtons.containsKey(povHash)) {
       povButtons.put(povHash, new POVButton(this, angle, fuzzy));
     }
 
