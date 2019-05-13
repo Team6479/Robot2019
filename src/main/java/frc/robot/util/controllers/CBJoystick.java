@@ -3,38 +3,18 @@ package frc.robot.util.controllers;
 import java.util.HashMap;
 import java.util.Objects;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.util.buttons.POVButton;
-import frc.robot.wpioverride.XboxController;
+import frc.robot.util.controllers.CBXboxController.Buttons;
 
-public class CBXboxController extends XboxController {
-  /**
-   * Represents a digital button on an XboxController.
-   */
-  public enum Buttons {
-    kBumperLeft(5),
-    kBumperRight(6),
-    kStickLeft(9),
-    kStickRight(10),
-    kA(1),
-    kB(2),
-    kX(3),
-    kY(4),
-    kBack(7),
-    kStart(8);
-
-    public final int value;
-
-    Buttons(int value) {
-      this.value = value;
-    }
-  }
+public class CBJoystick extends Joystick{
 
   private HashMap<Buttons, Button> buttons;
   private HashMap<Integer, Button> povButtons;
 
-  public CBXboxController(int port) {
+  public CBJoystick(int port) {
     super(port);
     buttons = new HashMap<Buttons, Button>();
     povButtons = new HashMap<Integer, Button>();
