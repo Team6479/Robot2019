@@ -1,11 +1,10 @@
 package frc.robot.util.buttons;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MultiButton extends Button {
   private final ArrayList<Button> buttons;
@@ -37,5 +36,4 @@ public class MultiButton extends Button {
     }
     return check;
   }
-
 }

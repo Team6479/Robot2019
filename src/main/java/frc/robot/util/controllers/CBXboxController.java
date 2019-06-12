@@ -1,17 +1,14 @@
 package frc.robot.util.controllers;
 
-import java.util.HashMap;
-import java.util.Objects;
-
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.util.buttons.POVButton;
 import frc.robot.wpioverride.XboxController;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class CBXboxController extends XboxController {
-  /**
-   * Represents a digital button on an XboxController.
-   */
+  /** Represents a digital button on an XboxController. */
   public enum Buttons {
     kBumperLeft(5),
     kBumperRight(6),
