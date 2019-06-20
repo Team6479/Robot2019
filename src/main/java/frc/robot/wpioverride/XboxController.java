@@ -1,9 +1,10 @@
-package frc.robot.drivers;
+package frc.robot.wpioverride;
 
 import robot.controllers.XboxMap;
 
 public class XboxController extends edu.wpi.first.wpilibj.XboxController {
 	private double deadZone;
+	private DriverStation driverStation = DriverStation.getInstance();
 
 	/**
 	 * Construct an instance of a joystick. The joystick index is the USB port on the drivers
@@ -56,4 +57,18 @@ public class XboxController extends edu.wpi.first.wpilibj.XboxController {
 			return y;
 		}
 	}
+
+  /**
+   * Get the angle in degrees of a POV on the HID.
+   *
+   * <p>The POV angles start at 0 in the up direction, and increase clockwise (eg right is 90,
+   * upper-left is 315).
+   *
+   * @param pov The index of the POV to read (starting at 0)
+   * @return the angle of the POV in degrees, or -1 if the POV is not pressed.
+   */
+  @Override
+  public int getPOV(int pov) {
+    return driverStation.getStickPOV(super.getPort(), pov);
+  }
 }

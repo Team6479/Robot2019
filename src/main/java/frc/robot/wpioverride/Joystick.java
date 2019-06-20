@@ -1,4 +1,4 @@
-package frc.robot.drivers;
+package frc.robot.wpioverride;
 
 public class Joystick extends edu.wpi.first.wpilibj.Joystick {
   public static final double AXIS_THRESHOLD = 0.1;
