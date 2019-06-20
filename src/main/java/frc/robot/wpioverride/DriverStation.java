@@ -7,12 +7,6 @@
 
 package frc.robot.wpioverride;
 
-import java.nio.ByteBuffer;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.hal.ControlWord;
 import edu.wpi.first.hal.HAL;
@@ -24,17 +18,23 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
+import java.nio.ByteBuffer;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Provide access to the network communication data to / from the Driver Station.
- */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength",
-                   "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.TooManyFields",
-                   "PMD.TooManyMethods"})
+/** Provide access to the network communication data to / from the Driver Station. */
+@SuppressWarnings({
+  "PMD.CyclomaticComplexity",
+  "PMD.ExcessiveClassLength",
+  "PMD.ExcessivePublicCount",
+  "PMD.GodClass",
+  "PMD.TooManyFields",
+  "PMD.TooManyMethods"
+})
 public class DriverStation {
-  /**
-   * Number of Joystick Ports.
-   */
+  /** Number of Joystick Ports. */
   public static final int kJoystickPorts = 6;
 
   private static class HALJoystickButtons {
@@ -60,15 +60,18 @@ public class DriverStation {
     }
   }
 
-  /**
-   * The robot alliance that the robot is a part of.
-   */
+  /** The robot alliance that the robot is a part of. */
   public enum Alliance {
-    Red, Blue, Invalid
+    Red,
+    Blue,
+    Invalid
   }
 
   public enum MatchType {
-    None, Practice, Qualification, Elimination
+    None,
+    Practice,
+    Qualification,
+    Elimination
   }
 
   private static final double JOYSTICK_UNPLUGGED_MESSAGE_INTERVAL = 1.0;
@@ -90,22 +93,31 @@ public class DriverStation {
   private static class MatchDataSender {
     @SuppressWarnings("MemberName")
     NetworkTable table;
+
     @SuppressWarnings("MemberName")
     NetworkTableEntry typeMetadata;
+
     @SuppressWarnings("MemberName")
     NetworkTableEntry gameSpecificMessage;
+
     @SuppressWarnings("MemberName")
     NetworkTableEntry eventName;
+
     @SuppressWarnings("MemberName")
     NetworkTableEntry matchNumber;
+
     @SuppressWarnings("MemberName")
     NetworkTableEntry replayNumber;
+
     @SuppressWarnings("MemberName")
     NetworkTableEntry matchType;
+
     @SuppressWarnings("MemberName")
     NetworkTableEntry alliance;
+
     @SuppressWarnings("MemberName")
     NetworkTableEntry station;
+
     @SuppressWarnings("MemberName")
     NetworkTableEntry controlWord;
 
@@ -158,6 +170,7 @@ public class DriverStation {
   // Internal Driver Station thread
   @SuppressWarnings("PMD.SingularField")
   private final Thread m_thread;
+
   private volatile boolean m_threadKeepAlive = true;
 
   private final ReentrantLock m_cacheDataMutex = new ReentrantLock();
@@ -221,16 +234,13 @@ public class DriverStation {
     m_thread.start();
   }
 
-  /**
-   * Kill the thread.
-   */
+  /** Kill the thread. */
   public void release() {
     m_threadKeepAlive = false;
   }
 
   /**
-   * Report error to Driver Station. Optionally appends Stack trace
-   * to error message.
+   * Report error to Driver Station. Optionally appends Stack trace to error message.
    *
    * @param printTrace If true, append stack trace to error string
    */
@@ -239,8 +249,7 @@ public class DriverStation {
   }
 
   /**
-   * Report error to Driver Station. Appends provided stack trace
-   * to error message.
+   * Report error to Driver Station. Appends provided stack trace to error message.
    *
    * @param stackTrace The stack trace to append
    */
@@ -249,8 +258,7 @@ public class DriverStation {
   }
 
   /**
-   * Report warning to Driver Station. Optionally appends Stack
-   * trace to warning message.
+   * Report warning to Driver Station. Optionally appends Stack trace to warning message.
    *
    * @param printTrace If true, append stack trace to warning string
    */
@@ -259,8 +267,7 @@ public class DriverStation {
   }
 
   /**
-   * Report warning to Driver Station. Appends provided stack
-   * trace to warning message.
+   * Report warning to Driver Station. Appends provided stack trace to warning message.
    *
    * @param stackTrace The stack trace to append
    */
@@ -268,18 +275,22 @@ public class DriverStation {
     reportErrorImpl(false, 1, error, stackTrace);
   }
 
-  private static void reportErrorImpl(boolean isError, int code, String error, boolean
-      printTrace) {
+  private static void reportErrorImpl(boolean isError, int code, String error, boolean printTrace) {
     reportErrorImpl(isError, code, error, printTrace, Thread.currentThread().getStackTrace(), 3);
   }
 
-  private static void reportErrorImpl(boolean isError, int code, String error,
-      StackTraceElement[] stackTrace) {
+  private static void reportErrorImpl(
+      boolean isError, int code, String error, StackTraceElement[] stackTrace) {
     reportErrorImpl(isError, code, error, true, stackTrace, 0);
   }
 
-  private static void reportErrorImpl(boolean isError, int code, String error,
-      boolean printTrace, StackTraceElement[] stackTrace, int stackTraceFirst) {
+  private static void reportErrorImpl(
+      boolean isError,
+      int code,
+      String error,
+      boolean printTrace,
+      StackTraceElement[] stackTrace,
+      int stackTraceFirst) {
     String locString;
     if (stackTrace.length >= stackTraceFirst + 1) {
       locString = stackTrace[stackTraceFirst].toString();
@@ -305,7 +316,7 @@ public class DriverStation {
   /**
    * The state of one joystick button. Button indexes begin at 1.
    *
-   * @param stick  The joystick to read.
+   * @param stick The joystick to read.
    * @param button The button index, beginning at 1.
    * @return The state of the joystick button.
    */
@@ -322,8 +333,12 @@ public class DriverStation {
       if (button > m_joystickButtons[stick].m_count) {
         // Unlock early so error printing isn't locked.
         m_cacheDataMutex.unlock();
-        reportJoystickUnpluggedWarning("Joystick Button " + button + " on port " + stick
-            + " not available, check if controller is plugged in");
+        reportJoystickUnpluggedWarning(
+            "Joystick Button "
+                + button
+                + " on port "
+                + stick
+                + " not available, check if controller is plugged in");
       }
 
       return (m_joystickButtons[stick].m_buttons & 1 << (button - 1)) != 0;
@@ -337,7 +352,7 @@ public class DriverStation {
   /**
    * Whether one joystick button was pressed since the last check. Button indexes begin at 1.
    *
-   * @param stick  The joystick to read.
+   * @param stick The joystick to read.
    * @param button The button index, beginning at 1.
    * @return Whether the joystick button was pressed since the last check.
    */
@@ -366,17 +381,20 @@ public class DriverStation {
       }
     }
     if (error) {
-      reportJoystickUnpluggedWarning("Joystick Button " + button + " on port " + stick
-          + " not available, check if controller is plugged in");
+      reportJoystickUnpluggedWarning(
+          "Joystick Button "
+              + button
+              + " on port "
+              + stick
+              + " not available, check if controller is plugged in");
     }
     return retVal;
   }
 
   /**
-   * Whether one joystick button was released since the last check. Button indexes
-   * begin at 1.
+   * Whether one joystick button was released since the last check. Button indexes begin at 1.
    *
-   * @param stick  The joystick to read.
+   * @param stick The joystick to read.
    * @param button The button index, beginning at 1.
    * @return Whether the joystick button was released since the last check.
    */
@@ -405,8 +423,12 @@ public class DriverStation {
       }
     }
     if (error) {
-      reportJoystickUnpluggedWarning("Joystick Button " + button + " on port " + stick
-          + " not available, check if controller is plugged in");
+      reportJoystickUnpluggedWarning(
+          "Joystick Button "
+              + button
+              + " on port "
+              + stick
+              + " not available, check if controller is plugged in");
     }
     return retVal;
   }
@@ -416,7 +438,7 @@ public class DriverStation {
    * to the specified port.
    *
    * @param stick The joystick to read.
-   * @param axis  The analog axis value to read from the joystick.
+   * @param axis The analog axis value to read from the joystick.
    * @return The value of the axis on the joystick.
    */
   public double getStickAxis(int stick, int axis) {
@@ -432,8 +454,12 @@ public class DriverStation {
       if (axis >= m_joystickAxes[stick].m_count) {
         // Unlock early so error printing isn't locked.
         m_cacheDataMutex.unlock();
-        reportJoystickUnpluggedWarning("Joystick axis " + axis + " on port " + stick
-            + " not available, check if controller is plugged in");
+        reportJoystickUnpluggedWarning(
+            "Joystick axis "
+                + axis
+                + " on port "
+                + stick
+                + " not available, check if controller is plugged in");
         return 0.0;
       }
 
@@ -463,8 +489,12 @@ public class DriverStation {
       if (pov >= m_joystickPOVs[stick].m_count) {
         // Unlock early so error printing isn't locked.
         m_cacheDataMutex.unlock();
-        reportJoystickUnpluggedWarning("Joystick POV " + pov + " on port " + stick
-            + " not available, check if controller is plugged in");
+        reportJoystickUnpluggedWarning(
+            "Joystick POV "
+                + pov
+                + " on port "
+                + stick
+                + " not available, check if controller is plugged in");
 
         return -1;
       }
@@ -860,9 +890,7 @@ public class DriverStation {
     }
   }
 
-  /**
-   * Wait for new data from the driver station.
-   */
+  /** Wait for new data from the driver station. */
   public void waitForData() {
     waitForData(0);
   }
@@ -885,8 +913,8 @@ public class DriverStation {
           long now = RobotController.getFPGATime();
           if (now < startTime + timeoutMicros) {
             // We still have time to wait
-            boolean signaled = m_waitForDataCond.await(startTime + timeoutMicros - now,
-                                                TimeUnit.MICROSECONDS);
+            boolean signaled =
+                m_waitForDataCond.await(startTime + timeoutMicros - now, TimeUnit.MICROSECONDS);
             if (!signaled) {
               // Return false if a timeout happened
               return false;
@@ -913,8 +941,8 @@ public class DriverStation {
    * Return the approximate match time. The FMS does not send an official match time to the robots,
    * but does send an approximate match time. The value will count down the time remaining in the
    * current period (auto or teleop). Warning: This is not an official time (so it cannot be used to
-   * dispute ref calls or guarantee that a function will trigger before the match ends) The
-   * Practice Match function of the DS approximates the behaviour seen on the field.
+   * dispute ref calls or guarantee that a function will trigger before the match ends) The Practice
+   * Match function of the DS approximates the behaviour seen on the field.
    *
    * @return Time remaining in current match period (auto or teleop) in seconds
    */
@@ -1007,7 +1035,6 @@ public class DriverStation {
         stationNumber = 3;
         break;
     }
-
 
     String eventName;
     String gameSpecificMessage;
@@ -1117,9 +1144,7 @@ public class DriverStation {
     }
   }
 
-  /**
-   * Provides the service routine for the DS polling m_thread.
-   */
+  /** Provides the service routine for the DS polling m_thread. */
   private void run() {
     int safetyCounter = 0;
     while (m_threadKeepAlive) {
@@ -1151,8 +1176,8 @@ public class DriverStation {
   }
 
   /**
-   * Updates the data in the control word cache. Updates if the force parameter is set, or if
-   * 50ms have passed since the last update.
+   * Updates the data in the control word cache. Updates if the force parameter is set, or if 50ms
+   * have passed since the last update.
    *
    * @param force True to force an update to the cache, otherwise update if 50ms have passed.
    */

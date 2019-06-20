@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
-/**
- * Add your docs here.
- */
+/** Add your docs here. */
 public class ClimberDeploy extends Subsystem {
   private DoubleSolenoid deployDubSol;
 
@@ -22,8 +20,7 @@ public class ClimberDeploy extends Subsystem {
   }
 
   @Override
-  public void initDefaultCommand() {
-  }
+  public void initDefaultCommand() {}
 
   public void deploy() {
     deployDubSol.set(DoubleSolenoid.Value.kForward);
