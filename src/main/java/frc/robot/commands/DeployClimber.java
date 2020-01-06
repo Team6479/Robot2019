@@ -7,42 +7,33 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.TimedCommand;
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ClimberDeploy;
 
 /**
  * Add your docs here.
  */
-public class DeployClimber extends TimedCommand {
+public class DeployClimber extends CommandBase {
+  private final ClimberDeploy climberDeploy;
+
   /**
    * Add your docs here.
    */
-  public DeployClimber() {
-    super(1);
-    requires(Robot.climberDeploy);
+  public DeployClimber(ClimberDeploy climberDeploy) {
+    this.climberDeploy = climberDeploy;
+    addRequirements(this.climberDeploy);
+    withTimeout(1);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
-    Robot.climberDeploy.deploy();
-  }
-
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
+  public void initialize() {
+    climberDeploy.deploy();
   }
 
   // Called once after timeout
   @Override
-  protected void end() {
-    Robot.climberDeploy.retract();;
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    end();
+  public void end(boolean interrupted) {
+    climberDeploy.retract();
   }
 }

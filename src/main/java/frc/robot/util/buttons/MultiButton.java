@@ -1,10 +1,10 @@
 package frc.robot.util.buttons;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import java.util.ArrayList;
 import java.util.Arrays;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class MultiButton extends Button {
   private final ArrayList<Button> buttons;

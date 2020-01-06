@@ -11,15 +11,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
-import frc.robot.commands.TeleopDrive;
 
 /**
  * Add your docs here.
  */
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends SubsystemBase {
 
   private TalonSRX leftFront;
   private TalonSRX leftBack;
@@ -64,10 +62,10 @@ public class Drivetrain extends Subsystem {
     rightBack.setSensorPhase(true);
   }
 
-  @Override
-  public void initDefaultCommand() {
-    setDefaultCommand(new TeleopDrive());
-  }
+  // @Override
+  // public void initDefaultCommand() {
+  //   setDefaultCommand(new TeleopDrive());
+  // }
 
   public void mecanumDrive(double speedLR, double rotation, double speedFB) {
     leftFront.set(ControlMode.PercentOutput, (speedFB + speedLR + rotation));

@@ -8,13 +8,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class HatchGrabber extends Subsystem {
+public class HatchGrabber extends SubsystemBase {
   private DoubleSolenoid grabberSol;
 
   public HatchGrabber() {
@@ -22,10 +22,6 @@ public class HatchGrabber extends Subsystem {
 
     // Set default state to grab
     grab();
-  }
-
-  @Override
-  public void initDefaultCommand() {
   }
 
   public void grab() {

@@ -8,21 +8,17 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class ClimberGrabber extends Subsystem {
+public class ClimberGrabber extends SubsystemBase {
   private DoubleSolenoid climberDubSol;
 
   public ClimberGrabber() {
     climberDubSol = new DoubleSolenoid(RobotMap.SOLENOID_CLIMBER_0, RobotMap.SOLENOID_CLIMBER_1);
-  }
-
-  @Override
-  public void initDefaultCommand() {
   }
 
   public void grab() {

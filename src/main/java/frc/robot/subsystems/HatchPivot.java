@@ -8,13 +8,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class HatchPivot extends Subsystem {
+public class HatchPivot extends SubsystemBase {
   private DoubleSolenoid pivotSol;
 
   public HatchPivot() {
@@ -22,10 +22,6 @@ public class HatchPivot extends Subsystem {
 
     // Set default state to inside robot frame
     pivotBack();
-  }
-
-  @Override
-  public void initDefaultCommand() {
   }
 
   public void pivotForward() {

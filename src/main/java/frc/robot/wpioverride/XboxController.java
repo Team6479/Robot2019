@@ -1,9 +1,23 @@
 package frc.robot.wpioverride;
 
-import robot.controllers.XboxMap;
-
 public class XboxController extends edu.wpi.first.wpilibj.XboxController {
-	private double deadZone;
+  public enum Axis {
+    kLeftJoystickX(0),
+    kLeftJoystickY(1),
+    kRightJoystickX(4),
+    kRightJoyStickY(5),
+    kLeftTrigger(2),
+    kRightTrigger(3);
+
+    @SuppressWarnings({"MemberName", "PMD.SingularField"})
+    public final int value;
+
+    Axis(int value) {
+      this.value = value;
+    }
+  }
+
+  private double deadZone;
 	private DriverStation driverStation = DriverStation.getInstance();
 
 	/**
@@ -19,20 +33,20 @@ public class XboxController extends edu.wpi.first.wpilibj.XboxController {
 
 	@Override
 	public double getRawAxis(int axis) {
-		if (axis == XboxMap.LeftTrigger || axis == XboxMap.RightTrigger) {
+		if (axis == Axis.kLeftTrigger.value|| axis == Axis.kRightTrigger.value) {
 			return super.getRawAxis(axis);
 		}
 
 		double x;
 		double y;
 
-		if (axis == XboxMap.LeftJoystickX || axis == XboxMap.LeftJoystickY) {
-			x = super.getRawAxis(XboxMap.LeftJoystickX);
-			y = super.getRawAxis(XboxMap.LeftJoystickY);
+		if (axis == Axis.kLeftJoystickX.value || axis == Axis.kLeftJoystickY.value) {
+			x = super.getRawAxis(Axis.kLeftJoystickX.value);
+			y = super.getRawAxis(Axis.kLeftJoystickY.value);
 		}
 		else {
-			x = super.getRawAxis(XboxMap.RightJoystickX);
-			y = super.getRawAxis(XboxMap.RightJoyStickY);
+			x = super.getRawAxis(Axis.kRightJoystickX.value);
+			y = super.getRawAxis(Axis.kRightJoyStickY.value);
 		}
 
 		//Magnitude
@@ -50,7 +64,7 @@ public class XboxController extends edu.wpi.first.wpilibj.XboxController {
 			y = 0;
 		}
 
-		if (axis == XboxMap.LeftJoystickX || axis == XboxMap.RightJoystickX) {
+		if (axis == Axis.kLeftJoystickX.value || axis == Axis.kRightJoystickX.value) {
 			return x;
 		}
 		else {

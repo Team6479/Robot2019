@@ -8,22 +8,17 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class ClimberWinch extends Subsystem {
+public class ClimberWinch extends SubsystemBase {
   private Spark climberMotor;
 
   public ClimberWinch() {
     climberMotor = new Spark(RobotMap.CLIMBER_SPARK);
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // setDefaultCommand(new ClimberClimb());
   }
 
   public void pull() {

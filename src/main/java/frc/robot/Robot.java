@@ -7,16 +7,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.subsystems.ClimberDeploy;
-import frc.robot.subsystems.ClimberGrabber;
-import frc.robot.subsystems.ClimberWinch;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.HatchGrabber;
-import frc.robot.subsystems.HatchPivot;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,14 +18,7 @@ import frc.robot.subsystems.HatchPivot;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static OI oi;
-  public static Drivetrain drivetrain;
-  public static HatchGrabber hatchGrabber;
-  public static HatchPivot hatchPivot;
-  public static ClimberDeploy climberDeploy;
-  public static ClimberGrabber climberGrabber;
-  public static ClimberWinch climberWinch;
-  public static Compressor compressor;
+  private RobotContainer robotContainer;
 
 
   /**
@@ -42,18 +27,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    compressor = new Compressor(RobotMap.COMPRESSOR);
+    // compressor = new Compressor(RobotMap.COMPRESSOR);
 
-    drivetrain = new Drivetrain();
-    hatchGrabber = new HatchGrabber();
-    hatchPivot = new HatchPivot();
-    climberDeploy = new ClimberDeploy();
-    climberGrabber = new ClimberGrabber();
-    climberWinch = new ClimberWinch();
-
-    oi = new OI();
-
-    CameraServer.getInstance().startAutomaticCapture();
+    robotContainer = new RobotContainer();
   }
 
   /**
@@ -79,7 +55,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    Scheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
   }
 
   /**
@@ -102,7 +78,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
   }
 
   @Override
@@ -114,7 +90,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    Scheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
   }
 
   /**
